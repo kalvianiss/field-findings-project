@@ -1,0 +1,39 @@
+<div
+  fxLayout="column"
+  fxLayoutAlign="start strecth"
+  fxLayoutGap="10px"
+  class="pxy-15"
+>
+  <mat-divider *ngIf="!employee"></mat-divider>
+  <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px">
+    <app-button-minus
+      [name]="customCancel ? customCancel : 'Cancel'"
+      (click)="dialogClose.emit()"
+      [finance]="customWCancel"
+      *ngIf="!hideCancel"
+    ></app-button-minus>
+    <app-button-plus
+      *ngIf="unpost"
+      (click)="unpostBtn.emit()"
+      [name]="'Unpost'"
+    ></app-button-plus>
+    <app-button-plus
+      *ngIf="post"
+      (click)="postBtn.emit()"
+      [name]="'postJurnal'"
+    ></app-button-plus>
+    <app-button-plus
+      [name]="template ? template : 'insert'"
+      *ngIf="btnInsert"
+      [finance]="template ? true : false"
+      (click)="insert.emit()"
+    ></app-button-plus>
+    <app-button-plus
+      [finance]="customW"
+      [name]="customAdd ? customAdd : 'Create'"
+      *ngIf="btnAdd && !showHide"
+      (click)="submit.emit()"
+      [reimbursementBtn]="reimbursementBtn"
+    ></app-button-plus>
+  </div>
+</div>

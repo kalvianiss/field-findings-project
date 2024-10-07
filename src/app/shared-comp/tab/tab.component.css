@@ -1,0 +1,57 @@
+/* start css tabs menu */
+
+.box-tabs {
+  width: 100%;
+  margin: 0;
+}
+
+.btn-tabs {
+  width: 75%;
+  padding: 10px;
+  margin: 0;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  text-transform: uppercase;
+  font-family: 'Inter';
+  font-weight: 400;
+}
+.tabs-75 {
+  width: 75%;
+}
+.tabs-50 {
+  width: 50%;
+}
+
+.btn-tabs-nonactive {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  border-bottom:2px solid var(--color-tabs);
+}
+
+.btn-tabs-active {
+  background-color:  var(--color-tabs) !important;
+  color: var(--color-white);
+  font-weight: 600;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom:unset !important;
+}
+
+.btn-tabs-empty {
+  border-bottom: 2px solid var(--color-tabs);
+  padding: 10px;
+  width: 10%;
+}
+.tabs-empty {
+  width: 100%;
+}
+
+.wd-100{
+  width: 180%;
+}
+.wd-30{
+  width:30%;
+}
+
+/* end cass tabs menu */

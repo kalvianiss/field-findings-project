@@ -1,0 +1,46 @@
+.body-header {
+  background-color:  var(--color-white);
+  padding: 5px 15px;
+  box-shadow: 1px 1px 2px 1px #f4f8fb;
+}
+.header-deft{
+  // padding: 5px;
+  padding: 10px 35px 10px 25px;
+  background-color: var(--color-white);
+  box-shadow: 1px 1px 2px 1px #f4f8fb;
+}
+.btn-toogle {
+  border: none;
+  outline: none;
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+::ng-deep .mat-menu-item {
+  height: unset !important;
+  line-height: 30px !important;
+}
+.icon-chev {
+  position: relative;
+  top: 3px;
+}
+.lang-menu{
+  padding-left: 4px;
+}
+
+.user-icon{
+ border-radius: 100px;
+ width: 100px;
+}
+
+.sperator-line {
+  border-right: 1px solid #DDE5EB;
+  width: 20px;
+  height: 30px;
+}
+.py-10 {
+  padding:5px 10px;
+}
+
+.lh-15 {
+  line-height: 1.5;
+}

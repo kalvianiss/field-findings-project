@@ -1,0 +1,7 @@
+.btn-delete-icon {
+  background-color: var(--color-border);
+  height: 35px;
+}
+/* .btn-delete-icon.icon-add {
+   filter: brightness(1.5);
+} */

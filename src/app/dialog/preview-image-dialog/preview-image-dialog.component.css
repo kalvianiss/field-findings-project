@@ -1,0 +1,7 @@
+.prev-img-w{
+  max-inline-size: 100%;
+  block-size: auto;
+  inline-size: 100%;
+  border-radius:6px;
+  max-height: calc(100vh - 15em);
+}

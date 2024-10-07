@@ -1,0 +1,232 @@
+<div class="body-content-print">
+    <div
+      class="btn-print"
+      fxLayout="row"
+      fxLayoutAlign="center center"
+      fxLayoutGap="10px"
+    >
+      <app-button-minus (click)="backPage()" name="close"></app-button-minus>
+      <app-button-plus (click)="print()" name="print"></app-button-plus>
+    </div>
+    <div class="print-body" fxLayout="column" fxLayoutAlign="center stretch">
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <div
+          fxLayout="row"
+          fxLayoutAlign="start stretch"
+          fxLayoutGap="10px"
+          fxFlex
+        ></div>
+      </div>
+      <ng-container *ngIf="buildingData?.logo1">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+          <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+            <div class="box-image" *ngIf="buildingData?.logo1">
+              <img
+                [src]="
+                  imageService.getImageByFilename(buildingData?.logo1)
+                "
+                class="size-logo"
+                onerror="
+                      this.src='';
+                      this.style.objectFit = 'unset';
+                        this.style.width = '100px';
+                      "
+              />
+            </div>
+          </div>
+          <div 
+          fxLayout="row"
+          fxLayoutAlign="end start"
+          >
+            <div class="box-image" *ngIf="buildingData?.logo2">
+              <img
+                [src]="
+                  imageService.getImageByFilename(buildingData?.logo2)
+                "
+                class="size-logo"
+                onerror="
+                      this.src='';
+                      this.style.objectFit = 'unset';
+                        this.style.width = '100px';
+                      "
+              />
+            </div> 
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+      </ng-container>
+  
+      <!-- PRINT BODY-->
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+        <div class="f-20 fw-bold my-top my-bottom t-center">FIELD FINDINGS REPORT</div>
+        <div fxLayout="column" fxLayoutAlign="end end" fxLayoutGap="10px">
+            <div>
+                Complaint Number : {{ dataDetail.complaintCode }}
+            </div>
+        </div>
+            <table class="table-detail">
+                <tr>
+                    <td class="fw-bold t-center" colspan="2">User Detail</td>
+                    <td class="fw-bold t-center" colspan="2">Work Detail</td>
+                </tr>
+                <tr>
+                    <td>
+                        Location
+                    </td>
+                    <td>
+                        {{ dataDetail.location }}
+                    </td>
+                    <td>Detail</td>
+                    <td>
+                        {{ dataDetail.description }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Username
+                    </td>
+                    <td>
+                        {{ dataDetail.complainNameInfo }}
+                    </td>
+                    <td rowspan="2">Status</td>
+                    <td rowspan="2">
+                       <div [class]="checkStatus(dataDetail?.status)">
+                        {{ removeString.remove_(dataDetail.status) }}
+                       </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Company
+                    </td>
+                    <td>
+                        {{ company }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Unit</td>
+                    <td>
+                        {{ dataDetail.noUnit }}
+                    </td>
+                    <td>
+                        Detail Duration
+                    </td>
+                    <td>
+                        <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+                          <ng-container
+                            *ngFor="let x of dataDetail?.detail; let idx = index"
+                          >
+                            <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+                              <div>
+                                {{ idx + 1 }}.
+                              </div> 
+                              <div>
+                                {{ x[0] }} :
+                              </div> 
+                              <div [style]="'color:' + x[2]">
+                                {{ x[1] === "" ? "-" : x[1] }}
+                              </div>
+                            </div>
+                          </ng-container>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="f-18 fw-bold my-top my-bottom">Result</div>
+      <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="100px">
+        <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+          <div>BEFORE :</div>
+          <div *ngIf="dataDetail.image !== null">
+            <img
+              [src]="imageService.getImageByFilename(dataDetail.image)"
+              class="size-img"
+              onerror="
+                            this.src='';
+                            this.style.objectFit = 'unset';
+                              this.style.width = '100px';
+                            "
+            />
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+          <div>AFTER :</div>
+          <div *ngIf="dataDetail.afterImageUrl.length > 0" class="box-after-img">
+            <ng-container *ngFor="let img of dataDetail.afterImageUrl">
+              <img
+                [src]="imageService.getImageByFilename(img)"
+                class="size-img"
+                onerror="
+                            this.src='';
+                            this.style.objectFit = 'unset';
+                              this.style.width = '100px';
+                            "
+              />
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="my-top">
+        <mat-divider></mat-divider>
+      </div>
+  
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="7px">
+        <div class="f-18 fw-bold my-top">Progress History</div>
+        <ng-container *ngFor="let x of dataDetail.progresses; let i = index">
+          <div
+            fxLayout="row"
+            fxLayoutAlign="space-between stretch"
+            fxLayoutGap="10px"
+          >
+            <div>
+              {{ x.description }}
+            </div>
+            <div class="f-8">
+              {{ x.dateCreated * 1000 | date : "dd/MM/yyyy" }}
+            </div>
+          </div>
+          <div
+            fxLayout="row"
+            fxLayoutAlign="space-between stretch"
+            fxLayoutGap="10px"
+          >
+            <div>User Name : {{ x.createdBy }}</div>
+            <div
+              class="box-status-field"
+              [class]="checkStatus(removeString.remove_(x?.status))"
+            >
+              {{ removeString.remove_(x?.status) }}
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="fake-break"></div>
+        </ng-container>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px" class="my-top">
+        <div class="f-18 fw-bold">Signature</div>
+        <table class="table-signature">
+            <tr>
+                <ng-container>
+                    <td *ngFor="let x of buildingData?.signatureList" class="fw-bold t-center">
+                        {{ x }}
+                    </td>
+                </ng-container>
+            </tr>
+            <tr class="signature-col">
+                <ng-container>
+                    <td *ngFor="let x of buildingData?.signatureList">
+                   
+                    </td>
+                </ng-container>
+            </tr>
+        </table>
+      </div>
+  
+      <div class="footer-print t-capital f-10">
+        {{ date * 1000 | date : "dd-MM-yyyy HH:mm:ss" }} -
+        {{ userData?.name }}
+      </div>
+    </div>
+  </div>
+  

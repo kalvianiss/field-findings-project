@@ -1,0 +1,96 @@
+<div [ngClass]="bmNotifUnreadCount > 0 ? 'body-header' : 'header-deft'">
+  <div
+    fxLayout="row"
+    fxLayoutAlign="space-between center"
+    fxLayoutGap="10px"
+    fxLayoutGap.xs="5px"
+    fxFlex
+  >
+    <div fxFlex="15%" (click)="goBack()">
+      <img src="../../assets/images/defaultlogo.png" alt="logo">
+      <!-- <button
+        mat-icon-button
+        type="button"
+        class="btn-toogle"
+        (click)="burger()"
+        aria-label="Toggle sidenav"
+      >
+        <mat-icon svgIcon="menu"></mat-icon>
+      </button> -->
+    </div>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="end center"
+      fxLayoutAlign.xs="start center"
+      fxLayoutGap="10px"
+      fxFlex="85%"
+    >
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        fxLayoutAlign.xs="start center"
+        fxLayoutGap="10px"
+        fxLayoutGap.xs="5px"
+      >
+        <!-- <div
+          class="select-building"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+          *ngIf="hoActive"
+        >
+          <div
+            class="box-swicth-building pointer f-12 fw-600"
+            fxLayout="row"
+            fxLayoutAlign="start center"
+            fxLayoutGap="10px"
+            #tooltip="matTooltip"
+            matTooltip="Select Building"
+            (click)="selectBuilding.emit(buildingList)"
+          >
+            <mat-icon svgIcon="select_building"></mat-icon>
+            <div>{{ nameBuilding ? nameBuilding : "Select Building" }}</div>
+          </div>
+        </div> -->
+        <!-- <div *ngIf="buildForm.value" class="sperator-line"></div> -->
+
+        <div
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="10px"
+          class="pointer"
+          [matMenuTriggerFor]="menu"
+        >
+          <div>{{ userData?.name }}</div>
+          <div class="pointer">
+            <img
+              class="user-icon"
+              [src]="userData?.imageLocation"
+              alt="user"
+              onerror="
+                      this.src='assets/images/no-user.png';
+                      this.style.objectFit = 'unset';
+                      this.style.height = '45px';
+                      this.style.width = '45px';
+                      "
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- USER MENU -->
+<mat-menu #menu="matMenu">
+  <div class="menu-profile">
+    <ng-container *ngFor="let c of dropdown">
+      <button (click)="callFunc(c.key)" mat-menu-item>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+          <div class="icon-div" [ngClass]="c.iconCss"></div>
+          <span>{{ c.value }}</span>
+        </div>
+      </button>
+    </ng-container>
+  </div>
+</mat-menu>
+

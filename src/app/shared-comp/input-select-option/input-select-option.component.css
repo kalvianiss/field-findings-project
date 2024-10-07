@@ -1,0 +1,7 @@
+.bg-color {
+  background-color: red;
+}
+
+.f-width >.mat-form-field-appearance-legacy .mat-form-field-infix  {
+  background-color:red !important;
+}

@@ -1,0 +1,13 @@
+.btn-add-icon {
+  background-color: var(--btn-accent);
+  height: 35px;
+}
+.icon-add {
+   filter: brightness(1.5);
+}
+
+.bg-custom {
+  background-color: var(--color-accent);
+  height: 35px;
+}
+

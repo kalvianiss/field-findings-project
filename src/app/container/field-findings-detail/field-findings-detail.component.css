@@ -1,0 +1,123 @@
+.box-card-left{
+    background-color:var(--color-white);
+    padding: 24px;
+    border-radius:14px;
+  }
+  .box-card-center{
+    background-color:var(--color-white);
+    padding: 24px;
+     border-radius:14px;
+  }
+  .box-card-right{
+    background-color:var(--color-white);
+    padding: 24px;
+     border-radius:14px;
+  }
+  .btn-assign {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+  }
+  .btn-assign-kary{
+    background-color: var(--color-menu);
+    color: var(--color-white);
+  }
+  .btn-force {
+    background-color: var(--color-table-header);
+    color: var(--color-accent);
+  }
+  .btn-cancel {
+    color: var(--color-danger);
+  }
+  .box-status {
+    /* width:120px; */
+    width: 100%;
+  }
+  .box-image-inquiry{
+   width:100%;
+  }
+  .w-image{
+    width:100%;
+  }
+  .content-image{
+    position: relative;
+    margin: 0 auto;
+  }
+  img, svg{
+    vertical-align: unset !important;
+    max-width: 100%;
+    width:50%;
+    height: 100%;
+    border-radius: 4px;
+  }
+  .image-checklist{
+    width: 50%;
+  }
+  .btn-add-dept{
+    background-color: var(--color-card-inquiry);
+    color: var(--color-white);
+  }
+  .btn-scoller-image {
+    position:  relative;
+    z-index: 100;
+    top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .btn-prev {
+  
+    padding:10px;
+    width: 100px;
+    border-radius: 6px;
+  }
+  .btn-active{
+    background-color: var(--color-white) !important;
+    color: var(--color-accent) !important;
+    border: 2px solid var(--color-accent) !important;
+  }
+  .btn-inactive {
+    background-color: var(--color-white) !important;
+    color: var(--color-muted) !important;
+    border: 2px solid var(--color-muted);
+  }
+  .btn-next {
+    padding:10px;
+    width: 100px;
+    border-radius: 6px;
+  }
+  .box-forward{
+    width:100%;
+  }
+  .btn-color{
+    background-color: var(--color-card-inquiry);
+  }
+  .image-content {
+    position: relative;
+    margin: 0 auto;
+  }
+   .box-image {
+    height: 70%;
+  }
+  .box-image img {
+    width:100%;
+    height: 100%;
+  }
+  .box-slider {
+    height: 60% !important;
+  }
+  .box-slider img {
+    width:100%;
+    height: 35rem;
+  }
+  .btn-print {
+    background-color: var(--color-white);
+    color: var(--color-accent);
+    padding:2 4px !important;
+    width: 100%;
+    height: 28px;
+    border: 1px solid var(--color-accent);
+  }
+  .btn-print .btn-content {
+    position: relative;
+    top: -4px;
+  }
+  

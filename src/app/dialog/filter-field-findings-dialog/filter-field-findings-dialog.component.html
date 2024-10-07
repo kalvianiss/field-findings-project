@@ -1,0 +1,129 @@
+<div
+  class="box-container-content"
+  fxLayout="column"
+  fxLayoutAlign="start stretch"
+  fxLayoutGap="10px"
+>
+  <div
+    class="fw-bold f-16 pxy-15"
+    fxLayout="column"
+    fxLayoutAlign="start stretch"
+    fxLayoutGap="10px"
+  >
+    <div>
+      Filter Field Findings
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+  <div
+    class="box-content-modal pxy-15"
+    fxLayout="column"
+    fxLayoutAlign="start stretch"
+  >
+    <div fxLayout="column" class="start stretch">
+      <label>Date Type:</label>
+      <mat-form-field>
+        <mat-select
+          [formControl]="form.typeDate"
+          (selectionChange)="changeValue($event)"
+        >
+          <mat-option *ngFor="let x of typeDate" [value]="x.key">
+            {{ x.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div
+      *ngIf="form.typeDate.value === 'DAILY'"
+      fxLayout="row"
+      fxLayout.xs="column"
+      fxLayoutAlign="start stretch"
+      fxLayoutGap="5px"
+    >
+      <app-input-date
+        label="Start Date"
+        [control]="form.unixStart"
+        (dateEmit)="changeDate($event)"
+      >
+      </app-input-date>
+      <app-input-date
+        label="End Date"
+        [control]="form.unixEnd"
+        (dateEmit)="changeDate($event)"
+      >
+      </app-input-date>
+    </div>
+    <div
+      *ngIf="form.typeDate.value === 'MONTHLY'"
+      fxLayout="row"
+      fxLayout.xs="column"
+      fxLayoutAlign="start stretch"
+      fxLayoutGap="5px"
+    >
+      <app-input-date-month
+        label="Start Month"
+        [control]="form.dateStart"
+        fxFlex="100%"
+      ></app-input-date-month>
+      <app-input-date-month
+        label="End Month"
+        [control]="form.dateEnd"
+        fxFlex="100%"
+      ></app-input-date-month>
+    </div> 
+    <div fxLayout="column" fxLayoutAlign="start stretch">
+      <label>Category</label>
+      <mat-form-field>
+        <mat-select
+          [formControl]="form.category"
+          [value]="form.category.value"
+          (selectionChange)="onChange($event)"
+        >
+          <mat-option
+            *ngFor="let cat of category; let i = index"
+            [value]="cat.name"
+            >{{ removeService.remove_(cat.name) | titlecase }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div
+      fxLayout="column"
+      fxLayoutAlign="start stretch"
+      *ngIf="dropdownList.length > 0"
+    >
+      <label>Sub Category</label>
+      <ng-multiselect-dropdown
+        [placeholder]="'Select Sub Category'"
+        [settings]="dropdownSettings"
+        [data]="dropdownList"
+        [(ngModel)]="selectedItems"
+        (onSelect)="onItemSelect($event)"
+        (onDeSelect)="onDeSelect($event)"
+        (onSelectAll)="onSelectAll($event)"
+        (onDeSelectAll)="onDeSelectAll($event)"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="start stretch" class="my-top">
+      <label>Status</label>
+      <ng-multiselect-dropdown
+        [placeholder]="'Select Status'"
+        [settings]="dropdownSettings"
+        [data]="dropdownListStatus"
+        [(ngModel)]="selectedItemsStatus"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+  </div>
+
+  <app-button-plus-minus
+    [btnAdd]="true"
+    (dialogClose)="dialogRef.close()"
+    [customCancel]="'Close'"
+    (submit)="submit()"
+    [customAdd]="'filter'"
+  >
+  </app-button-plus-minus>
+</div>

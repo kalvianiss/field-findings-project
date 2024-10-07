@@ -1,0 +1,311 @@
+<div class="box-container-content">
+    <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+      <div
+        fxLayout="row"
+        fxLayout.xs="column"
+        fxLayoutAlign.xs="start stretch"
+        fxLayoutAlign="space-between start"
+        fxFlex
+        class="my-top"
+        fxLayoutGap="20px"
+      >
+        <div
+          class="box-card-left f-12"
+          fxFlex="30%"
+          fxFlex.sm="30%"
+          fxFlex.xs="100%"
+        >
+          <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+            <div
+              fxLayout="row"
+              fxLayout.sm="column"
+              fxLayout.xs="column"
+              fxLayoutAlign="space-between center"
+              fxLayoutGap="10px"
+            >
+              <div class="box-status">
+                <div [class]="checkStatus(complaintList?.status)">
+                  <div>{{ removeString.remove_(complaintList?.status) }}</div>
+                </div>
+              </div>
+              <button
+                class="pointer btn-print t-upper fw-bold f-12"
+                mat-button
+                mat-raised-button
+                #tooltip="matTooltip"
+                matTooltip="{{ 'Print' | uppercase }}"
+                (click)="printFieldFindings()"
+              >
+                <div
+                  fxLayout="row"
+                  fxLayoutAlign="center center"
+                  fxLayoutGap="10px"
+                  class="btn-content"
+                >
+                  <mat-icon svgIcon="print"></mat-icon>
+                  <div>Print</div>
+                </div>
+              </button>
+            </div>
+  
+            <div
+              fxLayout="column"
+              fxLayoutAlign="start stretch"
+              fxLayoutGap="5px"
+            >
+              <div class="t-muted">Complaint Number :</div>
+              <div>{{ complaintList?.complaintCode }}</div>
+            </div>
+  
+            <div
+              fxLayout="column"
+              fxLayoutAlign="start stretch"
+              fxLayoutGap="5px"
+            >
+              <div class="t-muted">Tenant Name:</div>
+              <div>
+                {{ complaintList?.complainNameInfo }}
+              </div>
+            </div>
+            <div
+              fxLayout="column"
+              fxLayoutAlign="start stretch"
+              fxLayoutGap="5px"
+            >
+              <div class="t-muted">Location Name:</div>
+              <div>
+                {{ complaintList?.location }}
+              </div>
+            </div>
+            <div
+              fxLayout="column"
+              fxLayoutAlign="start stretch"
+              fxLayoutGap="5px"
+            >
+              <div class="t-muted">No. Unit:</div>
+              <div>
+                {{ complaintList?.noUnit }}
+              </div>
+            </div>
+            <div
+              fxLayout="column"
+              fxLayoutAlign="start stretch"
+              fxLayoutGap="5px"
+            >
+              <div class="t-muted">Date Time:</div>
+              <div>
+                {{
+                  complaintList?.dateCreated * 1000 | date : "dd-MM-yyyy HH:mm:ss"
+                }}
+              </div>
+            </div>
+  
+            <div
+              fxLayout="column"
+              fxLayoutAlign="start stretch"
+              fxLayoutGap="5px"
+            >
+              <div class="t-muted">Detail:</div>
+              <div>
+                {{ complaintList?.description }}
+              </div>
+            </div>
+  
+            <div
+              fxLayout="column"
+              fxLayoutAlign="start stretch"
+              fxLayoutGap="5px"
+            >
+              <div class="t-muted">Detail Duration:</div>
+              <div
+                fxLayout="row"
+                fxLayoutAlign="start stretch"
+                fxLayoutGap="5px"
+                *ngFor="let x of complaintList?.detail; let idx = index"
+              >
+                <div>{{ idx + 1 }} .</div>
+                <div>{{ x[0] }} : </div>
+                <div [style]="'color:' + x[2]">{{ x[1] === "" ? "-" : x[1] }}</div>
+              </div>
+            </div>
+            <div
+              fxLayout="column"
+              fxLayoutAlign="start stretch"
+              fxLayoutGap="5px"
+              *ngIf="complaintList?.note"
+            >
+              <div class="t-muted">Note:</div>
+              <div>{{ complaintList?.note }}</div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="box-card-center"
+          fxFlex="70%"
+          fxFlex.sm="70%"
+          fxFlex.xs="100%"
+        >
+          <div fxLayout="column" fxLayoutAlign="start stretch">
+            <div
+              fxLayout="row"
+              fxLayoutAlign="center center"
+              fxLayoutGap="10px"
+              class="btn-scoller-image"
+            >
+              <button
+                mat-button
+                mat-flat-button
+                class="btn-prev t-upper f-12"
+                [ngClass]="isPrevious ? 'btn-active' : 'btn-inactive'"
+                (click)="previousStep()"
+              >
+                Before
+              </button>
+              <button
+                mat-button
+                mat-flat-button
+                class="btn-next t-upper f-12"
+                [ngClass]="isNext ? 'btn-active' : 'btn-inactive'"
+                (click)="nextStep()"
+              >
+              After
+              </button>
+            </div>
+            <div class="w-image t-center box-slider" *ngIf="isPrevious">
+              <img
+                  [src]="imageService.getImageByFilename(imagePrev)"
+                  alt="slider image"
+                  onerror="
+                    this.src='assets/images/noimage.png';
+                    this.style.objectFit = 'unset';
+                    "
+                />
+            </div>
+            <div class="w-image t-center box-slider" *ngIf="isNext">
+              <img
+                  [src]="imageService.getImageByFilename(imageNext)"
+                  alt="slider image"
+                  onerror="
+                    this.src='assets/images/noimage.png';
+                    this.style.objectFit = 'unset';
+                    "
+                />
+            </div>
+          </div>
+          <div
+            fxLayout="column"
+            fxLayoutAlign="start stretch"
+            fxLayoutGap="10px"
+            class="my-top"
+          >
+            <div fxLayout="row" fxLayoutAlign="start stretch">
+              <div class="f-20 fw-600">Progress</div>
+            </div>
+            <mat-divider></mat-divider>
+            <div
+              fxLayout="column"
+              fxLayoutAlign="start stretch"
+              fxFlex
+              fxLayoutGap="10px"
+            >
+              <ng-container
+                *ngFor="let dt of complaintList?.progresses; let idx = index"
+              >
+                <div
+                  fxLayout="row"
+                  fxLayoutAlign="center stretch"
+                  fxLayoutGap="10px"
+                >
+                  <div
+                    fxLayout="column"
+                    fxLayoutAlign="center stretch"
+                    fxFlex="90%"
+                    fxLayoutGap="10px"
+                  >
+                    <div *ngIf="dt?.image" class="box-image">
+                      <img
+                        [src]="imageService.getImageByFilename(dt?.image)"
+                        alt="image"
+                        class="pointer"
+                        (click)="openImg(imageService.getImageByFilename(dt?.image))"
+                      />
+                    </div>
+                    <div
+                      fxLayout="row"
+                      fxLayoutAlign="space-between stretch"
+                      fxLayoutGap="10px"
+                    >
+                      <div
+                        fxLayout="column"
+                        fxLayoutAlign="start stretch"
+                        fxLayoutGap="5px"
+                      >
+                        <div>
+                          {{ dt?.description }}
+                        </div>
+                        <div class="f-12 fw-600">{{ dt?.createdBy }}</div>
+                        <div class="t-muted f-12">{{ dt.deptName }}</div>
+                      </div>
+                      <div
+                        fxLayout="column"
+                        fxLayoutAlign="end end"
+                        fxLayoutGap="5px"
+                      >
+                        <div
+                          *ngIf="dt.canForward"
+                          (click)="setForward(dt.id)"
+                          class="box-forward"
+                        >
+                          <button
+                            [disabled]="loadingService.loadingBtn$ | async"
+                            mat-button
+                            mat-raised-button
+                            class="box-forward btn-plus"
+                          >
+                            <div
+                              fxLayout="row"
+                              fxLayoutAlign="center center"
+                              fxLayoutGap="5px"
+                            >
+                              <i
+                                [ngClass]="
+                                  (loadingService.loadingBtn$ | async)
+                                    ? 'fa fa-spinner fa-spin'
+                                    : ''
+                                "
+                              ></i>
+                              <div>
+                                {{
+                                  dt.forwardedDate
+                                    ? (dt.forwardedDate * 1000
+                                      | date : "dd-MM-yyyy  HH:mm:ss")
+                                    : "Forward"
+                                }}
+                              </div>
+                              <mat-icon svgIcon="forward"></mat-icon>
+                            </div>
+                          </button>
+                        </div>
+                        <div class="box-status f-12">
+                          <div [class]="checkStatus(dt?.status)">
+                            <div>{{ dt?.status }}</div>
+                          </div>
+                        </div>
+                        <div class="f-12">
+                          {{
+                            dt?.dateCreated * 1000 | date : "dd-MM-yyyy HH:mm:ss"
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

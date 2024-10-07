@@ -1,0 +1,50 @@
+<div
+  [fxLayout]="column ? 'column' : 'row'"
+  fxLayoutAlign="start stretch"
+  fxLayoutGap="10px"
+>
+  <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="5px" fxFlex>
+    <label>{{ labelStart }}</label>
+    <mat-form-field class="pointer" fxFlex="100%">
+      <input
+        class="pointer"
+        #inputDate
+        matInput
+        [matDatepicker]="picker"
+        [formControl]="dateStart"
+        (focusout)="validateDate(inputDate)"
+        (focusout)="updateUnix(picker)"
+      />
+      <mat-datepicker-toggle
+        [disabled]="true"
+        matSuffix
+        (click)="picker.open()"
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker (closed)="updateUnix(picker)" #picker> </mat-datepicker>
+      <mat-hint *ngIf="textHint" align="end">
+        <div class="t-danger">{{ textHint }}</div>
+      </mat-hint>
+    </mat-form-field>
+  </div>
+
+  <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="5px" fxFlex>
+    <label>{{ labelEnd }}</label>
+    <mat-form-field class="pointer" (click)="picker2.open()" fxFlex="100%">
+      <input
+        class="pointer"
+        matInput
+        [matDatepicker]="picker2"
+        (click)="picker2.open()"
+        readonly
+        [formControl]="dateEnd"
+      />
+      <mat-datepicker-toggle
+        [disabled]="true"
+        matSuffix
+        [for]="picker2"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker2 (closed)="updateUnix(picker2)"> </mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>

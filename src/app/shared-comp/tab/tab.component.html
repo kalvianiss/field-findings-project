@@ -1,0 +1,24 @@
+<div class="box-tabs">
+  <div
+    class="menu-tabs f-12"
+    fxLayout="row"
+    fxLayout.xs="column"
+    fxLayoutAlign="start center"
+    *ngIf="tabList?.length > 1"
+  >
+    <ng-container *ngFor="let x of tabList; let i = index">
+      <div
+        *ngIf="x.visible"
+        class="btn-tabs btn-tabs-nonactive"
+        [ngClass]="activeIdx === i ? 'btn-tabs-active' : ''"
+        [class]="tabsW ? 'tabs-70' : 'tabs-50'"
+        (click)="clickTab(x.name, x)"
+      >
+        <div class="unselect-text">{{ x.name }}</div>
+      </div>
+    </ng-container>
+    <div class="btn-tabs-empty" [ngClass]="tabsW ? '' : 'tabs-empty'">
+      &nbsp;
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<button
+  mat-button
+  mat-raised-button
+  [ngClass]="checkType(name) ?? ''"
+  [class.btn-w-150]="!finance"
+  type="button"
+  [class.f-12]="finance"
+  [class.btnC]="btnW"
+>
+  <div
+    fxLayout="row"
+    fxLayoutAlign="start center"
+    fxLayoutGap="5px"
+    class="btn-padd"
+    *ngIf="finance && !btnW"
+  >
+    <mat-icon [svgIcon]="refresh ? 'refresh' : 'list'"></mat-icon>
+    <div class="t-upper">
+      {{ name }}
+    </div>
+  </div>
+  <div class="t-upper" [class.t-red]="name === 'REJECT'" *ngIf="!finance">
+    {{ name }}
+  </div>
+</button>

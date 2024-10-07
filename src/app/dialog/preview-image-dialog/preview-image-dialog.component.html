@@ -1,0 +1,30 @@
+<div
+  class="box-container-content pxy-15"
+  fxLayout="column"
+  fxLayoutAlign="start stretch"
+  fxLayoutGap="10px"
+>
+  <div
+    fxLayout="row"
+    fxLayoutAlign="end center"
+    (click)="dialogRef.close()"
+    class="pointer"
+  >
+    <mat-icon
+      svgIcon="cancel"
+      #tooltip="matTooltip"
+      matTooltip="Close"
+    ></mat-icon>
+  </div>
+  <div class="box-content-prev">
+    <img
+      [src]="data"
+      alt="image"
+      class="prev-img-w pointer"
+      onerror="
+              this.src='assets/images/noimage.png';
+              this.style.objectFit = 'unset';
+              "
+    />
+  </div>
+</div>

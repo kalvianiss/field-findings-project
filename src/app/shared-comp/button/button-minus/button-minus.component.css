@@ -1,0 +1,8 @@
+
+.btnC {
+  width:200px !important;
+}
+
+.t-red {
+  color: var(--color-danger) !important;
+}

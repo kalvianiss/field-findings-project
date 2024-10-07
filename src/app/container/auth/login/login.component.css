@@ -1,0 +1,56 @@
+.logo-w {
+    width:200px;
+  }
+  .txt-welcome {
+    font-size: 20px;
+  }
+  .txt-building{
+    font-size:34px;
+    font-weight:700;
+    line-height:40px;
+  }
+  .content-right {
+   width: 70%;
+   height:100%;
+   position: relative;
+   margin: 0 auto;
+  }
+  .line-h30{
+    line-height:30px;
+  }
+  .box-content-left{
+    position: relative;
+    top: 50px;
+  }
+  
+  
+  @media (min-width:320px) and (max-width:480px){
+    .side-left {
+      display:none;
+    }
+    .side-right {
+      width: 100%;
+      padding: 15px 0px;
+      font-size: 12px !important;
+      position: relative;
+      max-height: 100vh;
+      overflow: auto;
+    }
+    .my-top{
+      margin-top:unset;
+    }
+    .f-28 {
+      font-size: var(--f-18);
+    }
+    .content-right {
+      width: 100%;
+      padding: 15px;
+    }
+  }
+  
+  @media (max-width:768px){
+    .side-left {
+      display:none;
+    }
+  }
+  

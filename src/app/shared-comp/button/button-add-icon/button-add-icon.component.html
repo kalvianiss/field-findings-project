@@ -1,0 +1,18 @@
+<button
+  mat-button
+  mat-raised-button
+  type="button"
+  [ngClass]="tenant ? 'bg-custom' : 'btn-add-icon'"
+  #tooltip="matTooltip"
+  matTooltip="{{ name ? name : 'Add New' }}"
+>
+  <div fxLayout="row" fxLayoutAlign="center center" *ngIf="!unposted">
+    <mat-icon
+      [svgIcon]="tenant ? 'add' : 'add-icon'"
+      class="icon-add"
+    ></mat-icon>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center" *ngIf="unposted">
+    <mat-icon [svgIcon]="'unpost'" class="icon-add"></mat-icon>
+  </div>
+</button>

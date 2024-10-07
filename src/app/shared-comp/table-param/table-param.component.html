@@ -1,0 +1,452 @@
+<div
+  class="box-table-param"
+  fxLayout="column"
+  fxLayoutAlign="start strecth"
+  fxLayoutGap="15px"
+  *ngIf="!hideParam"
+>
+  <div
+    fxLayout="row"
+    [fxLayoutAlign]="
+      titleTable || changeEmploye ? 'space-between stretch' : 'end end'
+    "
+    fxLayout.sm="column"
+    fxLayoutAlign.sm="start stretch"
+    fxLayout.xs="column"
+    fxLayoutAlign.xs="start stretch"
+    fxLayoutGap="10px"
+  >
+    <div class="fw-600 f-16" *ngIf="titleTable">
+      {{ titleTable }}
+    </div>
+    <div
+      fxFlex="100%"
+      fxLayout="column"
+      fxLayoutAlign="center stretch"
+      *ngIf="changeEmploye"
+    >
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        fxLayoutGap="10px"
+      >
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+          <mat-icon
+            svgIcon="btn-print"
+            class="pointer"
+            [ngStyle]="{ transform: 'scale(1.5)' }"
+          ></mat-icon>
+          <mat-icon
+            svgIcon="btn-excel"
+            class="pointer"
+            [ngStyle]="{ transform: 'scale(1.5)' }"
+          ></mat-icon>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+          <app-input-date-month
+            label="Date"
+            [control]="formInput.date"
+          ></app-input-date-month>
+          <!-- <app-input
+            label="Select Employee"
+            [readonly]="true"
+            [pointer]="true"
+            [control]="formInput.employeeName"
+            (actionOpenDialog)="openDialogEmploye()"
+            [suffixIcon]="'refresh'"
+            (visibleAction)="btnReset('employee')"
+          ></app-input>
+          <app-input
+            label="Change Type"
+            [readonly]="true"
+            [pointer]="true"
+            [control]="formInput.changeTypeName"
+            (actionOpenDialog)="openDialogChangeType()"
+            [suffixIcon]="'refresh'"
+            (visibleAction)="btnReset('status')"
+          ></app-input> -->
+          <div fxLayout="column" fxLayoutAlign="start stretch">
+            <!-- (click)="emitAny({ key: 'refresh' })" -->
+            <!-- <button
+              mat-button
+              mat-raised-button
+              #tooltip="matTooltip"
+              (click)="refreshFilter.emit(formInput.value)"
+              matTooltip="{{ 'Refresh' | translate | uppercase }}"
+              class="btn-refresh"
+              [class.bg-btn]="btnHo"
+            > -->
+            <button
+              mat-button
+              mat-raised-button
+              #tooltip="matTooltip"
+              (click)="refreshFilter.emit(formInput.value)"
+              matTooltip="{{ 'Refresh' | uppercase }}"
+              class="btn-refresh"
+              [class.bg-btn]="btnHo"
+            >
+              <div
+                fxLayout="row"
+                fxLayoutAlign="center center"
+                fxLayoutGap="10px"
+              >
+                <mat-icon svgIcon="refresh" class="icon-add"></mat-icon>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      fxLayout="row"
+      fxLayout.sm="column"
+      fxLayout.xs="column"
+      fxLayoutAlign.sm="center stretch"
+      fxLayoutAlign.xs="center stretch"
+      fxLayoutGap="15px"
+      fxLayoutAlign="end center"
+    >
+      <ng-container *ngIf="btnFilter && !findConfig('view')">
+        <div fxLayout="column" fxLayoutAlign="start stretch">
+          <button
+            mat-button
+            mat-raised-button
+            #tooltip="matTooltip"
+            matTooltip="{{ 'filter' | uppercase }}"
+            class="btn-refresh"
+            (click)="filterData(searchKey)"
+          >
+            <!-- (click)="filterInvoice.emit($event)" -->
+            <div
+              fxLayout="row"
+              fxLayoutAlign="center center"
+              fxLayoutGap="10px"
+            >
+              <mat-icon svgIcon="filter"></mat-icon>
+            </div>
+          </button>
+        </div>
+        <!-- <ng-container *ngIf="btnDownload"> -->
+        <div fxLayout="column" fxLayoutAlign="start stretch">
+          <button
+            mat-button
+            mat-raised-button
+            #tooltip="matTooltip"
+            matTooltip="Donload"
+            class="btn-refresh"
+            (click)="downloadReport.emit()"
+          >
+            <div
+              fxLayout="row"
+              fxLayoutAlign="center center"
+              fxLayoutGap="10px"
+            >
+              <mat-icon svgIcon="download"></mat-icon>
+            </div>
+          </button>
+        </div>
+        <!-- </ng-container> -->
+      </ng-container>
+
+      <ng-container *ngIf="findConfig('view')">
+        <div
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+          fxLayoutGap="10px"
+          fxLayout.sm="column"
+          fxLayout.xs="column"
+          fxLayoutAlign.sm="start stretch"
+          fxLayoutAlign.xs="start stretch"
+        >
+          <div
+            class="form-searh"
+            [class.w-400]="w400"
+            [class.w500]="this.w500"
+            [autocomplete]="'off'"
+          >
+            <span matPrefix>
+              <mat-icon svgIcon="search" class="icon-search"></mat-icon>
+            </span>
+            <input
+              [autocomplete]="'off'"
+              type="search"
+              [placeholder]="findPlaceholder()"
+              [(ngModel)]="searchKey"
+              (keydown.enter)="log($event)"
+              (keyup)="searchKeyText.next($event)"
+            />
+          </div>
+          <ng-container *ngIf="filterList?.length > 0">
+            <mat-form-field class="td-input">
+              <mat-select
+                (selectionChange)="updateFilter($event)"
+                [(ngModel)]="selected"
+              >
+                <mat-option *ngFor="let c of filterList" [value]="c.key">
+                  {{ c.value }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+
+          <ng-container *ngIf="filterYearly">
+            <div fxLayout="column" fxLayoutAlign="start stretch">
+              <mat-form-field
+                class="f-width pointer td-input"
+                (click)="picker.open()"
+              >
+                <input
+                  autocomplete="off"
+                  #input
+                  class="pointer"
+                  matInput
+                  readonly
+                  [matDatepicker]="picker"
+                  (click)="picker.open()"
+                  [formControl]="controlYear"
+                />
+                <mat-datepicker-toggle
+                  [disabled]="true"
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker
+                  startView="multi-year"
+                  (yearSelected)="updateUnix($event, picker)"
+                  #picker
+                ></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="btnFilter">
+            <div fxLayout="column" fxLayoutAlign="start stretch">
+              <button
+                mat-button
+                mat-raised-button
+                #tooltip="matTooltip"
+                matTooltip="{{ 'filter' | uppercase }}"
+                class="btn-refresh"
+                [class.bg-btn]="btnHo"
+                (click)="filterData(searchKey)"
+              >
+                <!-- (click)="filterInvoice.emit($event)" -->
+                <div
+                  fxLayout="row"
+                  fxLayoutAlign="center center"
+                  fxLayoutGap="10px"
+                >
+                  <mat-icon svgIcon="filter"></mat-icon>
+                </div>
+              </button>
+            </div>
+          </ng-container>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start stretch">
+          <!-- <button
+            mat-button
+            mat-raised-button
+            #tooltip="matTooltip"
+            (click)="emitAny({ key: 'refresh' })"
+            matTooltip="{{ 'Refresh' | translate | uppercase }}"
+            class="btn-refresh"
+            [class.bg-btn]="btnHo"
+          > -->
+          <button
+            mat-button
+            mat-raised-button
+            #tooltip="matTooltip"
+            (click)="emitAny({ key: 'refresh' })"
+            matTooltip="{{ 'Refresh' | uppercase }}"
+            class="btn-refresh"
+            [class.bg-btn]="btnHo"
+          >
+            <div
+              fxLayout="row"
+              fxLayoutAlign="center center"
+              fxLayoutGap="10px"
+            >
+              <mat-icon svgIcon="refresh" class="icon-add"></mat-icon>
+            </div>
+          </button>
+        </div>
+
+        <ng-container *ngIf="btnExportExcel">
+          <div fxLayout="column" fxLayoutAlign="start stretch">
+            <button
+              mat-button
+              mat-raised-button
+              #tooltip="matTooltip"
+              matTooltip="{{ 'export excel' | uppercase }}"
+              class="btn-export-excel"
+              (click)="exportExcel.emit($event)"
+            >
+              <div
+                fxLayout="row"
+                fxLayoutAlign="center center"
+                fxLayoutGap="10px"
+              >
+                <mat-icon svgIcon="export-excel"></mat-icon>
+              </div>
+            </button>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <!-- <ng-container *ngIf="btnPaymentBillsDisc">
+      <div fxLayout="column" fxLayoutAlign="start stretch">
+        <button
+          mat-button
+          mat-raised-button
+          #tooltip="matTooltip"
+          matTooltip="{{ 'Payment Bills' | uppercase }}"
+          class="btn-refresh"
+          (click)="paymentBillsDisc.emit($event)"
+        >
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <mat-icon
+              svgIcon="payment-bills"
+              class="btn-pay-bills-disc"
+            ></mat-icon>
+          </div>
+        </button>
+      </div>
+    </ng-container> -->
+
+      <ng-container *ngIf="btnPayment">
+        <div fxLayout="column" fxLayoutAlign="start stretch">
+          <button
+            mat-button
+            mat-raised-button
+            #tooltip="matTooltip"
+            matTooltip="{{ 'Payment Selected Invoice' | uppercase }}"
+            class="btn-refresh"
+            (click)="paymentAll.emit($event)"
+            [class.bg-btn]="btnHo"
+          >
+            <div
+              fxLayout="row"
+              fxLayoutAlign="center center"
+              fxLayoutGap="10px"
+            >
+              <mat-icon svgIcon="payment-all"></mat-icon>
+            </div>
+          </button>
+        </div>
+      </ng-container>
+
+      <div *ngIf="addNeraca" fxLayout="column" fxLayoutAlign="start stretch">
+        <button
+          mat-button
+          mat-raised-button
+          type="button"
+          class="btn-add-new"
+          #tooltip="matTooltip"
+          matTooltip="Neraca Type"
+          (click)="addNeracaBtn.emit($event)"
+        >
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <mat-icon svgIcon="add" class="icon-add"></mat-icon>
+          </div>
+        </button>
+      </div>
+
+      <ng-container *ngFor="let x of tableConfig?.actionList">
+        <div
+          *ngIf="x.location === 'MAIN' && x.key !== 'view' && !showMore"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+        >
+          <button
+            mat-button
+            mat-raised-button
+            type="button"
+            [ngClass]="uiCSS(x)"
+            (click)="emitAny(x)"
+            #tooltip="matTooltip"
+            matTooltip="{{ x.value | uppercase }}"
+          >
+            <div
+              fxLayout="row"
+              fxLayoutAlign="center center"
+              fxLayoutGap="10px"
+            >
+              <mat-icon [svgIcon]="x.key" class="icon-add"></mat-icon>
+            </div>
+          </button>
+        </div>
+
+        <!-- add -->
+        <div
+          *ngIf="x.location === 'MAIN' && x.key === 'add' && showMore"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+        >
+          <button
+            mat-button
+            mat-raised-button
+            type="button"
+            [ngClass]="uiCSS(x)"
+            (click)="emitAny(x)"
+            #tooltip="matTooltip"
+            matTooltip="{{ x.value | uppercase }}"
+          >
+            <div
+              fxLayout="row"
+              fxLayoutAlign="center center"
+              fxLayoutGap="10px"
+            >
+              <mat-icon [svgIcon]="x.key" class="icon-add"></mat-icon>
+            </div>
+          </button>
+        </div>
+      </ng-container>
+
+      <!-- BUTTON MORE -->
+      <div fxLayout="column" fxLayoutAlign="start stretch" *ngIf="showMore">
+        <!-- <button
+          mat-button
+          mat-raised-button
+          class="btn-add-new"
+          type="button"
+          #tooltip="matTooltip"
+          matTooltip="{{ 'MoreMenu' | translate }}"
+          [matMenuTriggerFor]="menuMore"
+        > -->
+        <button
+          mat-button
+          mat-raised-button
+          class="btn-add-new"
+          type="button"
+          #tooltip="matTooltip"
+          matTooltip="'More Menu'"
+          [matMenuTriggerFor]="menuMore"
+        >
+          <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <mat-icon svgIcon="more" class="icon-add"></mat-icon>
+          </div>
+        </button>
+      </div>
+
+      <mat-menu #menuMore="matMenu">
+        <!-- <div class="menu-profile"> -->
+        <ng-container *ngFor="let c of tableConfig?.actionList">
+          <button
+            mat-menu-item
+            *ngIf="c.location === 'MAIN' && c.key !== 'view' && c.key !== 'add'"
+            (click)="emitAny(c)"
+          >
+            <div [ngClass]="changeColorText(c.key)" class="text-wrap">
+              {{ c.value }}
+            </div>
+          </button>
+        </ng-container>
+        <!-- </div> -->
+      </mat-menu>
+
+      <!-- END BUTTON MORE -->
+    </div>
+  </div>
+
+  <mat-divider *ngIf="tableConfig?.actionList.length > 0"></mat-divider>
+</div>

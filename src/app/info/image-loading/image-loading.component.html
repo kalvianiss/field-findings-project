@@ -1,0 +1,12 @@
+<div
+  class="box-info-main"
+  [class.relative]="relative"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+  fxLayoutGap="10px"
+>
+  <div [ngClass]="custom ? 'img60' : 'img50'" class="img-notfound"></div>
+  <div class="f-16 fw-bold">
+    {{ text !== undefined ? text : "Load data" }}
+  </div>
+</div>

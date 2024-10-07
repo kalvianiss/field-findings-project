@@ -1,0 +1,9 @@
+.btn-filter-icon {
+    background-color: var(--color-white);
+    height: 40px;
+    border: 2px solid;
+    border-color: var(--color-accent);
+  }
+  .btn-filter-icon.icon-paid {
+     filter: brightness(1.5);
+  }

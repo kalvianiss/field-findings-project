@@ -1,0 +1,136 @@
+.body-content-print {
+    height:100vh;
+    overflow: auto;
+    background-color: var(--color-white);
+    padding:15px;
+  }
+.print-body {
+    padding: 15px;
+}
+.btn-print{
+    margin-bottom:15px;
+}
+  
+    .body-print{
+      padding: 10px;
+      background-color: var(--color-white);
+    }
+  
+    .page-break{
+      page-break-after: always;
+      -webkit-print-color-adjust: exact;
+    }
+  
+    .t-italic{
+      font-style: italic;
+    }
+  
+    .padding-top-ev{
+      margin-top:30px;
+    }
+  
+    .mg-title{
+      margin-top: 20px;
+    }
+  
+    .batas{
+      height:20px;
+    }
+  
+    .box-image {
+      max-width: 100%;
+      height: auto;
+    }
+  
+    .size-logo{
+      height: 100%; 
+      width: 100%; 
+      max-width: 120px; 
+      max-height: 120px;
+    }
+  
+    .ic-cust {
+      width: 14px !important;
+      height: 14px !important;
+      position: relative;
+      top: 4px;
+    }
+  
+    .size-img{
+      max-width: 100%;
+      width: 100px;
+      height: 100px;
+    }
+  
+    .box-status{
+      background-color:var(--color-white);
+      max-width: 100%;
+      width: 100px;
+      text-align: center;
+      font-size:10px;
+    }
+  
+    .box-after-img {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .size-img {
+      border-radius:4px;
+    }
+  
+    .box-status-field {
+       min-width:100px;
+       max-width: 100%;
+    }
+  
+  .ml {
+    margin-left:15px;
+  }
+   
+  table, tr, td, th {
+    border: 1px solid;
+  }
+  .table-detail{
+    border-collapse:collapse;
+  }
+  .table-detail td {
+    padding:5px;
+  }
+  .table-signature{
+    border-collapse:collapse;
+  }
+  .table-signature td {
+    padding:5px;
+  }
+
+  .signature-col{
+    height:100px
+  }
+
+  .content-page {
+    page-break-before: auto;
+  }
+  
+  .fake-break {
+    line-height:4;
+    page-break-after: auto;
+  }
+  
+  
+  @media print {
+    .box-print-all {
+    overflow: hidden;
+    height: unset;
+  }
+    .print-body {
+    padding: unset;
+    page-break-after: always;
+  }
+  .hide {
+    display:none;
+  }
+  /* @page{
+    page-break-after: always;
+  } */
+}

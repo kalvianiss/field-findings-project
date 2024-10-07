@@ -1,0 +1,42 @@
+<button
+  [disabled]="
+    (!loadBtn &&
+      ((titleService.disableButton$ | async) ||
+        (loadingService.loadingBtn$ | async))) ||
+    reimbursementBtn
+  "
+  mat-button
+  mat-raised-button
+  class="unselect-text"
+  [class.btn-w-150]="!finance"
+  [class.btn-custom]="btnCustom"
+  [class.btn-loading]="loading"
+  [class.btn-post]="name === 'POSTJURNAL' || name === 'GENERATE PRORATE'"
+  [class.btn-approve]="name === 'GENERATE PRORATE'"
+  [ngClass]="checkType(name) ?? ''"
+  [class.btn-post-jurnal]="postJurnal"
+>
+  <div
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    fxLayoutGap="5px"
+    [class.btn-padd]="finance"
+  >
+    <mat-icon *ngIf="camera" svgIcon="camera-white"></mat-icon>
+    <i
+      [ngClass]="
+        !loadBtn &&
+        ((titleService.disableButton$ | async) ||
+          (loadingService.loadingBtn$ | async))
+          ? 'fa fa-spinner fa-spin'
+          : ''
+      "
+    ></i>
+    <div *ngIf="name !== 'POSTJURNAL'">
+      {{ (name === "TEMPLATE" ? "Save as Template" : name) | uppercase }}
+    </div>
+    <div *ngIf="name === 'POSTJURNAL'">
+      {{ "post" | uppercase }}
+    </div>
+  </div>
+</button>

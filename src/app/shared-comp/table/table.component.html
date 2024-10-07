@@ -1,0 +1,155 @@
+<div class="body-table-paging">
+  <!-- <div [ngClass]="!hidePaging ? 'container-table' : 'table-dashboard'"> -->
+  <div class="container-table">
+    <table
+      class="body-table"
+      *ngIf="tableUi; let d"
+      mat-table
+      matSort
+      [dataSource]="dataSource"
+    >
+      <ng-container *ngFor="let x of tableUi.tableConfigList">
+        <ng-container [matColumnDef]="x.key">
+          <th
+            class="tb-thead"
+            mat-header-cell
+            *matHeaderCellDef
+            #tooltip="matTooltip"
+            matTooltip="{{ x.key === 'actionAdd' ? 'Select Item' : '' }}"
+          >
+            {{ x.value }}
+          </th>
+
+          <td
+            mat-cell
+            *matCellDef="let element; let idx = index"
+            class="tb-tbody pointer"
+            (click)="showMenu($event, element, idx, x, $event)"
+            [ngClass]="x.key === 'note' ? 'td-100' : ''"
+            [ngClass]="setColorText(element, x.key)"
+            [class.t-unit]="x.key === 'unit'"
+          >
+            <div
+              [ngSwitch]="x.dataType"
+              #tooltip="matTooltip"
+              matTooltip="{{ checkAction() }}"
+              [style.max-width]="x.size ? x.size : '200px'"
+            >
+              <span *ngSwitchCase="'NUMBER'">
+                {{ getValue(element, x.key) | number : "1.2-2" }}
+              </span>
+              <span *ngSwitchCase="'DATE'">
+                {{
+                  getValue(element, x.key)
+                    ? (getValue(element, x.key) * 1000 | date : "dd-MM-yyyy")
+                    : "-"
+                }}
+              </span>
+              <span
+                *ngSwitchCase="'SLIDER'"
+                #tooltip="matTooltip"
+                fxLayout="column"
+                fxLayoutAlign="center stretch"
+                matTooltip="{{ x.key }}"
+              >
+                <mat-slide-toggle
+                  (change)="sendActionFn('upd' + x.key, element, idx, $event)"
+                  [formControl]="control.controls[idx][x.controlName]"
+                >
+                </mat-slide-toggle>
+              </span>
+              <span *ngSwitchCase="'DATETIMESTAMP'">
+                {{
+                  getValue(element, x.key)
+                    ? (getValue(element, x.key) * 1000
+                      | date : "dd-MM-yyyy HH:mm:ss")
+                    : "-"
+                }}
+              </span>
+              <span *ngSwitchCase="'IMAGE'">
+                {{ getValue(element, x.key) }}
+              </span>
+              <span *ngSwitchCase="'PRICE'">
+                <div [ngClass]="!hidePaging ? '' : 't-right'">
+                  {{ getValue(element, x.key) | number : "1.2-2" }}
+                </div>
+              </span>
+              <ng-container *ngIf="!adjUpdate">
+                <span *ngSwitchCase="'ACTION'" class="td-middle">
+                  <div
+                    (click)="updateData(idx, x.key, x.key)"
+                    #tooltip="matTooltip"
+                    matTooltip="Delete"
+                    class="icon-tb"
+                  >
+                    <div class="box-delete icon-delete"></div>
+                  </div>
+                </span>
+              </ng-container>
+
+              <span *ngSwitchCase="'SELECT'">
+                <mat-select
+                  class="field-variant form-searh"
+                  (selectionChange)="emitDropdownChange(idx, x.key, $event)"
+                  [formControl]="control.controls[idx][x.controlName]"
+                >
+                  <mat-option
+                    *ngFor="let d of element[x.dropdownField]"
+                    [value]="d"
+                    >{{ d }}</mat-option
+                  >
+                </mat-select>
+              </span>
+              <span *ngSwitchCase="'TEXTAREA'">
+                <textarea
+                  class="form-searh"
+                  [formControl]="control.controls[idx][x.controlName]"
+                ></textarea>
+              </span>
+              <span *ngSwitchDefault>
+                {{ getValue(element, x.key) }}
+              </span>
+            </div>
+          </td>
+        </ng-container>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr
+        mat-row
+        [ngClass]="{ disabledRow: isDisabled(row) }"
+        *matRowDef="let row; columns: displayedColumns; let idx = index"
+      ></tr>
+    </table>
+  </div>
+
+  <ng-container *ngIf="dataSource?.data?.length > 0 && !hidePaging">
+    <mat-paginator
+      [pageSizeOptions]="pageOpt"
+      showFirstLastButtons
+    ></mat-paginator>
+  </ng-container>
+</div>
+
+<mat-menu #allMenus="matMenu">
+  <button
+    *ngFor="let d of actionList"
+    mat-menu-item
+    (click)="sendData(d, $event)"
+    class="btn-row-tabel"
+  >
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+      <div class=" {{ d.icon }}"></div>
+      <span>{{ d.value }}</span>
+    </div>
+  </button>
+</mat-menu>
+
+<div
+  style="visibility: hidden; position: fixed"
+  [style.left]="menuPosition.x"
+  [style.top]="menuPosition.y"
+  [matMenuTriggerFor]="allMenus"
+></div>
+
+<!-- CHILD MENU TABEL -->

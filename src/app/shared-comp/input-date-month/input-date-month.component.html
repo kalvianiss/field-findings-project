@@ -1,0 +1,30 @@
+<div fxLayout="column" fxLayout="start stretch" fxLayoutGap="5px">
+  <label>{{ label }}</label>
+  <mat-form-field
+    id="form-input"
+    class="f-width pointer"
+    (click)="picker.open()"
+  >
+    <input
+      #input
+      class="pointer"
+      matInput
+      readonly
+      [matDatepicker]="picker"
+      (click)="picker.open()"
+      [formControl]="fr"
+    />
+    <mat-datepicker-toggle
+      [disabled]="true"
+      matSuffix
+      [for]="picker"
+    ></mat-datepicker-toggle>
+    <mat-datepicker
+      startView="multi-year"
+      (monthSelected)="updateUnix($event, picker)"
+      #picker
+    ></mat-datepicker>
+  </mat-form-field>
+</div>
+
+<div *ngIf="!control">error control not found !</div>

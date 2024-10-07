@@ -1,0 +1,37 @@
+<div fxLayout="column" fxLayout="start stretch" fxLayoutGap="5px">
+  <label>{{ label }}</label>
+  <mat-form-field
+    *ngIf="control"
+    class="f-width pointer"
+    (click)="openPicker()"
+  >
+    <input
+      #inputDate
+      class="pointer"
+      matInput
+      [matDatepicker]="picker"
+      [formControl]="fr"
+      [min]="minDate"
+      [max]="maxDate"
+      (input)="validateDate(inputDate)"
+      (input)="updateUnix(picker)"
+      readonly="{{ readonly !== undefined ? readonly : false }}"
+    />
+    <!-- [attr.readonly]="readonly ? readonly : false" -->
+    <mat-datepicker-toggle
+      [disabled]="readonly"
+      matSuffix
+      (click)="readonly ? '' : picker.open()"
+      [for]="picker"
+    ></mat-datepicker-toggle>
+    <mat-datepicker (closed)="updateUnix(picker)" #picker></mat-datepicker>
+    <mat-hint *ngIf="textHint" align="end">
+      <div class="t-danger">{{ textHint }}</div>
+    </mat-hint>
+    <mat-hint *ngIf="hint" align="end">
+      <div class="t-active">{{ hint }}</div>
+    </mat-hint>
+  </mat-form-field>
+</div>
+
+<div *ngIf="!control">error control not found !</div>

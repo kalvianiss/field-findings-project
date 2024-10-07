@@ -1,0 +1,24 @@
+<div fxLayout="column" fxLayout="start stretch" fxLayoutGap="5px">
+  <label>{{ label }}</label>
+  <mat-form-field *ngIf="control" class="f-width">
+    <textarea
+      matInput
+      [formControl]="control"
+      autocomplete="off"
+      [readonly]="readonly"
+      style="resize: none"
+      [rows]="rows"
+    ></textarea>
+    <mat-hint *ngIf="hint && !hintLength" align="end">
+      {{ hint }}
+    </mat-hint>
+    <mat-hint *ngIf="hintLength" align="end">
+      {{ control.value?.length || 0 }}/{{ hintLength }}
+    </mat-hint>
+    <mat-error *ngFor="let error of control.errors | errorKeys">
+      {{ messages[error] }}
+    </mat-error>
+  </mat-form-field>
+</div>
+
+<div *ngIf="!control">error control not found !</div>

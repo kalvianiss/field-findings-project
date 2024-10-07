@@ -1,0 +1,89 @@
+<div
+  class="box-container-content"
+  fxLayout="column"
+  fxLayoutAlign="start stretch"
+  fxLayoutGap="10px"
+>   
+    <div
+    class="fw-bold f-16 pxy-15"
+    fxLayout="column"
+    fxLayoutAlign="start stretch"
+    fxLayoutGap="10px"
+    >
+        <div> Settings </div>
+        <mat-divider></mat-divider>
+    </div>
+
+    <div
+    class="box-content-modal pxy-15"
+    fxLayout="column"
+    fxLayoutAlign="start stretch"
+    fxLayoutGap="36px"
+    >
+        <div
+        fxLayout="row"
+        fxLayoutAlign="start stretch"
+        fxLayoutGap="36px"
+        >
+            <ngx-dropzone
+            class="upload-profile"
+            [accept]="'image/jpeg'"
+            [maxFileSize]="5242880"
+            [accept]="'image/jpeg'"
+            [multiple]="'false'"
+            (change)="updateUserImage($event, 'logo1')"
+            >
+            <ngx-dropzone-label
+                #tooltip="matTooltip"
+                matTooltip="Upload Logo"
+            >
+                <label class="text-muted">Upload Logo (Left)</label>
+            </ngx-dropzone-label>
+            <ngx-dropzone-image-preview
+                class="profile-company"
+                *ngIf="file"
+                [removable]="true"
+                [file]="file"
+                (removed)="onRemoveUserImage('logo1')"
+            >
+                <ngx-dropzone-label></ngx-dropzone-label>
+            </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+
+            <ngx-dropzone
+            class="upload-profile"
+            [accept]="'image/jpeg'"
+            [maxFileSize]="5242880"
+            [accept]="'image/jpeg'"
+            [multiple]="'false'"
+            (change)="updateUserImage($event, 'logo2')"
+            >
+            <ngx-dropzone-label
+                #tooltip="matTooltip"
+                matTooltip="Upload Logo"
+            >
+                <label class="text-muted">Upload Logo (Right)</label>
+            </ngx-dropzone-label>
+            <ngx-dropzone-image-preview
+                class="profile-company"
+                *ngIf="file2"
+                [removable]="true"
+                [file]="file2"
+                (removed)="onRemoveUserImage('logo2')"
+            >
+                <ngx-dropzone-label></ngx-dropzone-label>
+            </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+        </div>
+            <app-input [label]="'List of Signature'" class="td-input" [control]="form.signatureList"></app-input>
+    </div>
+    
+    <app-button-plus-minus
+    [btnAdd]="true"
+    (dialogClose)="dialogRef.close()"
+    [customCancel]="'Close'"
+    (submit)="submit()"
+    [customAdd]="'Save'"
+    >
+    </app-button-plus-minus>
+</div>

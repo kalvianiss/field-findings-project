@@ -1,0 +1,16 @@
+.btn-add {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+  width: 120px !important;
+}
+.btn-add .icon-add{
+  filter: brightness(1.5);
+}
+.btn-add-equipment {
+  background-color: var(--color-card-inquiry);
+  color: var(--color-white);
+  width: 120px !important;
+}
+.btn-add-equipment .icon-add{
+  filter: brightness(1.5);
+}

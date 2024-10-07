@@ -1,0 +1,13 @@
+<button
+  mat-button
+  mat-raised-button
+  type="button"
+  #tooltip="matTooltip"
+  matTooltip="{{ name ? name : 'Delete' }}"
+  class="btn-delete-icon pointer"
+  [disabled]="disabled"
+>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <mat-icon svgIcon="delete-red" class="icon-add"></mat-icon>
+  </div>
+</button>

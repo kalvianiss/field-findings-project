@@ -1,0 +1,88 @@
+<div fxLayout="column" fxLayout="start stretch" fxLayoutGap="5px">
+  <label>{{ label }}</label>
+
+  <mat-form-field
+    *ngIf="control"
+    class="f-width pointer"
+    [ngClass]="fwidth ? fwidth : ''"
+  >
+    <span matPrefix *ngIf="prefixIcon">+62 &nbsp;</span>
+    <input
+      (click)="actionOpenDialog.emit()"
+      [type]="type"
+      matInput
+      [formControl]="control"
+      autocomplete="off"
+      [maxlength]="maxlength"
+      [readonly]="readonly"
+      [placeholder]="placeholder"
+      [max]="max"
+      class="pointer"
+      [min]="min"
+      [class]="tRight"
+      [class.pointer]="searchLocation"
+      [class.text-right]="pattern"
+      *ngIf="!price && !numbersOnly"
+      #tooltip="matTooltip"
+      matTooltip="{{ searchLocation ? control.value : '' }}"
+      (input)="checkInput($event.target.value)"
+    />
+    <!-- [ngClass]="pointer ? 'pointer' : ''" -->
+    <input
+      [type]="type"
+      matInput
+      [formControl]="control"
+      autocomplete="off"
+      [maxlength]="maxlength"
+      [readonly]="readonly"
+      [placeholder]="placeholder"
+      [max]="max"
+      [min]="min"
+      class="pointer"
+      [class.text-center]="maxlength && !noVa"
+      *ngIf="numbersOnly"
+      (focusout)="setValue($event)"
+      InpurNumberDirective
+      [allowDecimals]="true"
+      [allowSign]="true"
+      (paste)="inputValue($event)"
+    />
+    <input
+      *ngIf="price"
+      type="text"
+      [class]="tRight"
+      (keyup)="checkValue($event)"
+      [formControl]="control"
+      autocomplete="off"
+      matInput
+      class="pointer"
+      [readonly]="readonly"
+      [options]="options"
+      currencyMask
+    />
+    <mat-icon
+      class="bg-icon"
+      matSuffix
+      [svgIcon]="suffixIcon"
+      *ngIf="suffixIcon"
+      (click)="visibleAction.emit()"
+      #tooltip="matTooltip"
+      [matTooltip]="textIcon"
+    ></mat-icon>
+    <div class="bg-icon ic-percent" *ngIf="percent" matSuffix>&#x25;</div>
+    <mat-hint *ngIf="hint && !hintLength" [align]="finance ? 'start' : 'end'">
+      <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="5px">
+        <div [class.star]="hintColor">*</div>
+        <div [ngClass]="finance ? 't-active' : ''">{{ hint }}</div>
+      </div>
+    </mat-hint>
+    <mat-hint *ngIf="hintLength" align="end">
+      {{ control.value?.length || 0 }}/{{ hintLength }}
+    </mat-hint>
+    <mat-error *ngFor="let error of control.errors | errorKeys">
+      {{ messages[error] }}
+    </mat-error>
+  </mat-form-field>
+</div>
+
+<div *ngIf="!control">error control not found !</div>

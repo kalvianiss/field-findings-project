@@ -1,0 +1,573 @@
+<div *ngIf="!hideTable" class="body-table-paging">
+  <ng-container *ngIf="!(loadingService.loadingAll$ | async); else loadingPage">
+    <div
+      [class.container-table]="!customeTb"
+      [class.max-height]="maxHeight || utilityTenant"
+    >
+      <table
+        class="body-table"
+        *ngIf="tableUi; let d"
+        mat-table
+        (matSortChange)="announceSortChange($event)"
+        [dataSource]="dataSource"
+        matSort
+        [matSortDirection]="sortDirection"
+        [matSortActive]="nameSort"
+      >
+        <ng-container matColumnDef="no">
+          <th
+            class="tb-thead tb-number"
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+          >
+            No.
+          </th>
+          <td
+            class="tb-tbody pointer tb-number"
+            mat-cell
+            *matCellDef="let element; let idx = index"
+          >
+            {{
+              pageNumber == 1 ? idx + 1 : idx + 1 + (pageNumber - 1) * pageSize
+            }}.
+          </td>
+        </ng-container>
+
+        <ng-container
+          *ngFor="let x of tableUi.tableConfigList; let idx = index"
+        >
+          <ng-container [matColumnDef]="x.key">
+            <ng-container *ngIf="x.dataType === 'CHECKBOX'">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="table-header tb-thead"
+                sortActionDescription="Sort by {{ x.key }}"
+              >
+                <ng-container *ngIf="!booster">
+                  <mat-checkbox
+                    [indeterminate]="isIndeterminate()"
+                    [checked]="isChecked()"
+                    (change)="toggleAll($event)"
+                  >
+                  </mat-checkbox>
+                </ng-container>
+              </th>
+            </ng-container>
+
+            <th
+              class="tb-thead"
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              [disabled]="tableUi.entitySortList.indexOf(x.key) === -1"
+              [class.w-10]="x.key === 'no'"
+              sortActionDescription="Sort by {{ x.key }}"
+            >
+              <div
+                [class.th-content]="x.key === 'price' || x.key === 'grandTotal'"
+              >
+                {{ x.value }}
+              </div>
+            </th>
+
+            <td
+              class="tb-tbody pointer"
+              [class.td-align]="dialyReport"
+              [ngClass]="setColorText(element, x.key)"
+              mat-cell
+              *matCellDef="let element; let i = index"
+              (click)="showMenu($event, element, i, x, $event)"
+            >
+              <div
+                #tooltip="matTooltip"
+                matTooltip="{{
+                  x.dataType !== 'SLIDER' &&
+                  x.dataType !== 'SORT' &&
+                  x.dataType !== 'ACTION' &&
+                  x.dataType !== 'IMAGE' &&
+                  x.dataType !== 'IMAGE_DATA' &&
+                  x.dataType !== 'DOC_DATA'
+                    ? checkAction(x.key)
+                    : ''
+                }}"
+                [class.text-right]="x.key === 'price' || x.key === 'grandTotal'"
+              >
+                <ng-container *ngIf="x.key === 'checkbox'">
+                  <mat-checkbox
+                    #checkBox
+                    [disabled]="isDisabled(element)"
+                    [checked]="exist(element)"
+                    (change)="toggle(element, $event.checked, checkBox)"
+                  >
+                  </mat-checkbox>
+                </ng-container>
+
+                <ng-container [ngSwitch]="x.dataType">
+                  <span *ngSwitchCase="'NUMBER'">
+                    <ng-container
+                      *ngIf="
+                        x.key !== 'quantityAsset' && x.key !== 'totalStart'
+                      "
+                    >
+                      {{ x.key === "no" ? i + 1 : getValue(element, x.key) }}
+                    </ng-container>
+                    <ng-container
+                      *ngIf="
+                        x.key === 'quantityAsset' || x.key === 'totalStart'
+                      "
+                    >
+                      <div
+                        class="t-active"
+                        #tooltip="matTooltip"
+                        matTooltip="show detail"
+                        (click)="
+                          $event.stopPropagation();
+                          sendActionFn('upd' + x.key, element, i, $event)
+                        "
+                      >
+                        {{ getValue(element, x.key) }}
+                      </div>
+                    </ng-container>
+                  </span>
+                  <span
+                    *ngSwitchCase="'SLIDER'"
+                    #tooltip="matTooltip"
+                    matTooltip="{{ x.key }}"
+                    fxLayout="column"
+                    fxLayoutAlign="center stretch"
+                  >
+                    <mat-slide-toggle
+                      [disabled]="element.onlyStock"
+                      (change)="
+                        element[x.key] = $event.checked;
+                        sendActionFn('upd' + x.key, element, i, $event)
+                      "
+                      [checked]="element[x.key]"
+                    >
+                    </mat-slide-toggle>
+                  </span>
+
+                  <span
+                    *ngSwitchCase="'SORT'"
+                    #tooltip="matTooltip"
+                    fxLayout="column"
+                    fxLayoutAlign="center stretch"
+                    matTooltip=""
+                  >
+                    <div
+                      fxLayout="row"
+                      fxLayoutAlign="center center"
+                      fxLayoutGap="30px"
+                    >
+                      <div
+                        class="icon-div"
+                        [ngClass]="x.className"
+                        (click)="
+                          $event.stopPropagation();
+                          sendActionFn('up' + x.key, element, i, $event)
+                        "
+                        matTooltip="{{ 'Up' }}"
+                      >
+                        <mat-icon
+                          class="icon-up-down"
+                          [svgIcon]="setIconAction('up' + x.key)"
+                        ></mat-icon>
+                      </div>
+
+                      <div
+                        class="icon-div"
+                        [ngClass]="x.className"
+                        (click)="
+                          $event.stopPropagation();
+                          sendActionFn('down' + x.key, element, i, $event)
+                        "
+                        matTooltip="{{ 'Down' }}"
+                      >
+                        <mat-icon
+                          class="icon-up-down"
+                          [svgIcon]="setIconAction('down' + x.key)"
+                        ></mat-icon>
+                      </div>
+                    </div>
+                  </span>
+
+                  <span
+                    *ngSwitchCase="'ACTION'"
+                    fxLayout="column"
+                    fxLayoutAlign="center stretch"
+                    #tooltip="matTooltip"
+                    matTooltip="{{ x.key }}"
+                  >
+                    <div
+                      class="icon-div"
+                      [ngClass]="x.className"
+                      (click)="
+                        $event.stopPropagation();
+                        sendActionFn('upd' + x.key, element, i, $event)
+                      "
+                    >
+                      <mat-icon [svgIcon]="setIconAction(x.key)"></mat-icon>
+                    </div>
+                  </span>
+
+                  <span *ngSwitchCase="'DATETIMESTAMP'">
+                    {{
+                      getValue(element, x.key)
+                        ? (getValue(element, x.key) * 1000
+                          | date : "dd-MM-yyyy  HH:mm:ss")
+                        : "-"
+                    }}
+                  </span>
+                  <span *ngSwitchCase="'DATETIME'">
+                    {{
+                      getValue(element, x.key)
+                        ? (getValue(element, x.key) * 1000
+                          | date : "dd-MM-yyyy  HH:mm:ss")
+                        : "-"
+                    }}
+                  </span>
+                  <span *ngSwitchCase="'DATE'">
+                    {{
+                      getValue(element, x.key)
+                        ? (getValue(element, x.key) * 1000
+                          | date : "dd-MM-yyyy")
+                        : "-"
+                    }}
+                  </span>
+                  <span *ngSwitchCase="'TIME'">
+                    {{
+                      getValue(element, x.key)
+                        ? (getValue(element, x.key) * 1000 | date : "HH:mm")
+                        : "-"
+                    }}
+                  </span>
+                  <span
+                    *ngSwitchCase="'LINK'"
+                    [ngClass]="'t-active'"
+                    (click)="
+                      $event.stopPropagation();
+                      sendActionFn(x.action, element, i, $event)
+                    "
+                  >
+                    {{
+                      getValue(element, x.key) ? getValue(element, x.key) : ""
+                    }}
+                  </span>
+
+                  <span *ngSwitchCase="'LIST'">
+                    <ng-container *ngIf="!overtimeList && !tenantCompList">
+                      <div
+                        *ngFor="
+                          let c of getValueList(element, x.key);
+                          let idList = index
+                        "
+                      >
+                        <div
+                          class="f-12 td-wlist"
+                          fxlayout="column"
+                          fxLayoutAlign="start stretch"
+                        >
+                          <div
+                            fxLayout="row"
+                            fxLayoutAlign="start stretch"
+                            fxLayoutGap="5px"
+                          >
+                            <div>{{ idList + 1 }}.</div>
+                            <div *ngIf="x.key !== 'dateSent'">{{ c }}</div>
+                            <ng-container *ngIf="x.key === 'dateSent'">
+                              <div>{{ formatString(c) }}</div>
+                            </ng-container>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <table class="tb-overtime" *ngIf="overtimeList">
+                      <tr>
+                        <th>Hour</th>
+                        <th class="text-right">Value(Rp)</th>
+                      </tr>
+                      <ng-container
+                        *ngFor="
+                          let c of getValueList(element, x.key);
+                          let idList = index
+                        "
+                      >
+                        <tr>
+                          <td>{{ c[0] }}</td>
+                          <td class="text-right">{{ c[1] }}</td>
+                        </tr>
+                      </ng-container>
+                    </table>
+                    <table class="tb-overtime" *ngIf="tenantCompList">
+                      <ng-container
+                        *ngFor="
+                          let c of getValueList(element, x.key);
+                          let idList = index
+                        "
+                      >
+                        <tr>
+                          <td class="fw-bold">
+                            {{ c[0] }}
+                          </td>
+                          <td class="text-right" [style]="'color:' + c[2]">
+                            {{ c[1] === "" ? "-" : c[1] }}
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </table>
+                  </span>
+                  <span *ngSwitchCase="'LIST_VARIABLE'">
+                    <table class="tb-overtime">
+                      <ng-container
+                        *ngFor="
+                          let c of getValueList(element, x.key);
+                          let idList = index
+                        "
+                      >
+                        <tr>
+                          <td>
+                            <div
+                              fxlayout="row"
+                              fxLayoutAlign="start stretch"
+                              fxLayoutGap="10px"
+                            >
+                              <div>{{ idList + 1 }}.</div>
+                              <div [style.color]="c.color">
+                                {{ c.value }}
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </table>
+                  </span>
+                  <span
+                    *ngSwitchCase="'IMAGE'"
+                    (click)="sendActionFn('upd' + x.key, element, i, $event)"
+                  >
+                    <img
+                      [src]="
+                        imageService.getImageByFilename(
+                          getValue(element, x.key)
+                        )
+                      "
+                      alt="image"
+                      class="img-product"
+                      onerror="
+                      this.src='assets/icons/default-user.svg';
+                      this.style.objectFit = 'unset';
+                      this.style.height = '50px';
+                      this.style.width = '50px';
+                      "
+                    />
+                  </span>
+
+                  <span
+                    *ngSwitchCase="'IMAGE_DATA'"
+                    (click)="sendActionFn('upd' + x.key, element, i, $event)"
+                  >
+                    <img
+                      [src]="
+                        imageService.getImageByFilename(
+                          getValue(element, x.key)
+                        )
+                      "
+                      alt="image"
+                      class="img-product"
+                      onerror="
+                      this.src='assets/images/noimage.png';
+                      this.style.objectFit = 'unset';
+                      "
+                    />
+                  </span>
+                  <span
+                    *ngSwitchCase="'DOC_DATA'"
+                    #tooltip="matTooltip"
+                    matTooltip="Download File"
+                    (click)="sendActionFn('upd' + x.key, element, i, $event)"
+                  >
+                    <mat-icon class="icon-pdf" svgIcon="pdfFile"></mat-icon>
+                  </span>
+
+                  <span
+                    *ngSwitchCase="'PRICE'"
+                    #tooltip="matTooltip"
+                    matTooltip="{{
+                      showTextTooltip(x.key, getValue(element, x.key) === 0)
+                    }}"
+                    (click)="showDetailRecap(element, x.key)"
+                  >
+                    {{
+                      getValue(element, x.key) == null ||
+                      getValue(element, x.key) === 0
+                        ? "-"
+                        : (getValue(element, x.key) | number : "1.2-2")
+                    }}
+                  </span>
+
+                  <mat-form-field *ngSwitchCase="'INPUT'">
+                    <input
+                      [value]="getValue(element, x.key)"
+                      type="text"
+                      matInput
+                      (keydown.enter)="
+                        $event.stopPropagation();
+                        sendActionFn(x.key, element, i, $event)
+                      "
+                    />
+                  </mat-form-field>
+
+                  <input
+                    *ngSwitchCase="'INPUTNUMBER'"
+                    type="text"
+                    numbersOnly
+                    (keyup)="
+                      $event.stopPropagation();
+                      sendActionFn(x.key, element, i, $event)
+                    "
+                  />
+                  <span *ngSwitchCase="'TOGGLE'">
+                    <div
+                      class="fw-600"
+                      [ngClass]="
+                        getValue(element, x.key) === false
+                          ? 't-inactive'
+                          : 't-active'
+                      "
+                    >
+                      {{ getValue(element, x.key) === false ? "NO" : "YES" }}
+                    </div>
+                  </span>
+
+                  <span *ngSwitchDefault>
+                    <ng-container
+                      *ngIf="
+                        x.key === 'status' ||
+                        x.key === 'fittingOutStatus' ||
+                        (x.key !== 'color' && x.key === 'inOutStatus')
+                      "
+                    >
+                      <div [class]="setColorStatus(element, x.key)">
+                        {{ getValue(element, x.key) }}
+                      </div>
+                    </ng-container>
+                    <ng-container
+                      *ngIf="
+                        x.key !== 'status' &&
+                        x.key !== 'fittingOutStatus' &&
+                        x.key !== 'inOutStatus' &&
+                        x.key !== 'phone' &&
+                        x.key !== 'color'
+                      "
+                    >
+                      <div
+                        fxLayout="row"
+                        fxLayoutAlign="start center"
+                        fxLayoutGap="5px"
+                      >
+                        <div
+                          [ngClass]="
+                            x.key === 'statusText' ? element.button : ''
+                          "
+                        ></div>
+                        <div
+                          class="td-content"
+                          [class.t-danger]="x.key === 'errorMsg'"
+                          [ngClass]="changeTextColorAction(x.key)"
+                        >
+                          {{
+                            getValue(element, x.key)
+                              ? getValue(element, x.key)
+                              : ""
+                          }}
+                        </div>
+                      </div>
+                    </ng-container>
+                    <ng-container
+                      *ngIf="x.key === 'phone' && x.key !== 'color'"
+                    >
+                      {{ getValue(element, x.key) }}
+                    </ng-container>
+                    <ng-container *ngIf="x.key === 'color'">
+                      <div
+                        class="box-color"
+                        [style.background-color]="getValue(element, x.key)"
+                      >
+                      </div>
+                    </ng-container>
+                  </span>
+                </ng-container>
+              </div>
+            </td>
+          </ng-container>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          [ngClass]="{ disabledRow: isDisabled(row) }"
+          *matRowDef="let row; columns: displayedColumns; let i = index"
+        ></tr>
+
+        <ng-container *matNoDataRow>
+          <td [attr.colspan]="tableUi.tableConfigList.length" class="no-data">
+            <div class="no-data">
+              <app-image-loading
+                [text]="'No Data'"
+              ></app-image-loading>
+            </div>
+          </td>
+        </ng-container>
+      </table>
+    </div>
+
+    <div
+      *ngIf="resultLength && !hidePagination && !utilityTenant"
+      class="my-top"
+    >
+      <mat-paginator
+        (page)="pageChangeEv($event)"
+        [pageSizeOptions]="pageOpt"
+        [length]="resultLength"
+        [pageSize]="pageSize"
+        showFirstLastButtons
+        [pageIndex]="pageNumber - 1"
+      >
+      </mat-paginator>
+    </div>
+  </ng-container>
+</div>
+
+<mat-menu #allMenus="matMenu">
+  <button
+    *ngFor="let d of actionList"
+    mat-menu-item
+    (click)="sendData(d, $event)"
+    class="btn-row-tabel"
+  >
+    <ng-container>
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+        <div class="icon-div {{ d.icon }}"></div>
+        <span [ngClass]="changeTextColorAction(d.key)">{{ d.value }}</span>
+      </div>
+    </ng-container>
+  </button>
+</mat-menu>
+
+<div
+  style="visibility: hidden; position: fixed"
+  [style.left]="menuPosition.x"
+  [style.top]="menuPosition.y"
+  [matMenuTriggerFor]="allMenus"
+></div>
+
+<ng-template #loadingPage>
+  <ngx-skeleton-loader
+  count="20"
+  animation="progress-dark"
+  [theme]="{ 'border-radius': '6px', height: '35px' }"
+  ></ngx-skeleton-loader>
+</ng-template>

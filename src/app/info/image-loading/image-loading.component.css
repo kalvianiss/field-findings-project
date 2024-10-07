@@ -1,0 +1,16 @@
+.img50{
+  width: 30%;
+  position: relative;
+  margin: 0 auto;
+}
+.img60{
+  width: 60%;
+  position: relative;
+  margin: 0 auto;
+}
+
+.relative {
+  position: relative;
+  top: 50px;
+}
+

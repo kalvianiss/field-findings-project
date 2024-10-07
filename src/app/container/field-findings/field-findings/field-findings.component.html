@@ -1,0 +1,26 @@
+<div class="box-container-content">
+    <div
+      class="box-content-main"
+      fxLayout="column"
+      fxLayoutAlign="start stretch"
+      fxLayoutGap="10px"
+    >
+      <app-tab [tablist]="tabList" (clicked)="clickTab($event)"></app-tab>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+        <app-table-param
+          (anyEmitter)="callTabMethod($event)"
+          [tableConfig]="table.tableUi"
+          (search)="tabSearch($event)"
+          (searchAndFilter)="searchAndFilter($event)"
+          [btnFilter]="true"
+          (filterInvoice)="tabList[0].filterFieldFindings($event)"
+        ></app-table-param>
+        <app-table-paging
+          #table
+          (pageChangeTable)="pageChange($event)"
+          (sendAction)="callTableRowFunction($event)"
+        ></app-table-paging>
+      </div>
+    </div>
+  </div>
+  

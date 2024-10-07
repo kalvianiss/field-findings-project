@@ -1,0 +1,14 @@
+<div fxLayout="column" fxLayoutAlign="start stretch">
+  <label for="select">{{ label }}</label>
+  <mat-form-field id="selectForm" class="f-width">
+    <mat-select
+      [disabled]="disabled"
+      [formControl]="fControl"
+      (selectionChange)="changeValue.emit($event.value)"
+    >
+      <mat-option *ngFor="let x of arrList" [value]="x.val">{{
+        x.label
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
