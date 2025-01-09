@@ -110,10 +110,12 @@ export class SettingsFieldFindingDialogComponent implements OnInit {
   submit(){
     let split = this.form.signatureList.value.toString().split(',');
     this.form.signatureList.setValue(split);
+    if(this.form.signatureList.value.length === 1 && this.form.signatureList.value[0] === ''){
+      this.form.signatureList.setValue(null);
+    }
     if(this.form.signatureList.value.length > 4){
       this.snackbarService.createInfo('max 4 name of signature');
     }
-    
     BaseRest.build(this.settingRest)
     .callRest('changeSetting', (v) => {
       console.log('result',v)
