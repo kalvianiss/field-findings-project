@@ -16,10 +16,6 @@ const routes: Routes = [
     component: FieldFindingsDetailComponent,
   },
   {
-    path: 'field-findings/detail',
-    component: FieldFindingsDetailComponent,
-  },
-  {
     path: 'print',
     children: [
       { path: 'print-field-findings', component: PrintFieldFindingsComponent },

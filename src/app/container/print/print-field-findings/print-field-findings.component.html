@@ -205,24 +205,27 @@
       </div>
       <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px" class="my-top">
         <div class="f-18 fw-bold">Signature</div>
-        <table class="table-signature">
+          <table class="table-signature">
             <tr>
-                <ng-container>
-                    <td *ngFor="let x of buildingData?.signatureList" class="fw-bold t-center">
-                        {{ x }}
-                    </td>
-                </ng-container>
+              <ng-container *ngFor="let x of buildingData?.signatureList">
+                <td class="fw-bold t-center">{{ x.signature }}</td>
+              </ng-container>
             </tr>
             <tr class="signature-col">
                 <ng-container>
                     <td *ngFor="let x of buildingData?.signatureList">
-                   
+                    </td>
+                </ng-container>
+            </tr>
+            <tr>
+                <ng-container *ngFor="let x of buildingData?.signatureList" >
+                    <td class="fw-bold t-center">
+                        {{ x.position }}
                     </td>
                 </ng-container>
             </tr>
         </table>
       </div>
-  
       <div class="footer-print t-capital f-10">
         {{ date * 1000 | date : "dd-MM-yyyy HH:mm:ss" }} -
         {{ userData?.name }}

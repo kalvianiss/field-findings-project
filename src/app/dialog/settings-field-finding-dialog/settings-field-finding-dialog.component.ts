@@ -32,6 +32,8 @@ export class SettingsFieldFindingDialogComponent implements OnInit {
     BaseRest.build(this.settingRest)
     .callRest('getInquiryReportSetting', (v) => {
       this.form = new IRequestSettingFieldFindingForm(v.content);
+      this.form.addCustom(v.content.signatureList);
+      this.addNewRowData();
       if(this.form.logo1.value !== null){
       this.imageService
       .restToFile(
@@ -58,7 +60,6 @@ export class SettingsFieldFindingDialogComponent implements OnInit {
     })
     .params();
 
-    
   }
 
   updateUserImage(event, type) {
@@ -106,14 +107,14 @@ export class SettingsFieldFindingDialogComponent implements OnInit {
         return acc;
     }, ['']);
 }
+addNewRowData() {
+  this.form.signatureList.push(new IdataSignatureForm());
+}
 
   submit(){
-    let split = this.form.signatureList.value.toString().split(',');
-    this.form.signatureList.setValue(split);
-    if(this.form.signatureList.value.length === 1 && this.form.signatureList.value[0] === ''){
-      this.form.signatureList.setValue(null);
-    }
-    if(this.form.signatureList.value.length > 4){
+    // let split = this.form.signatureList.value.toString().split(',');
+    // this.form.signatureList.setValue(split);
+    if(this.form.signatureList.length > 4){
       this.snackbarService.createInfo('max 4 name of signature');
     }
     BaseRest.build(this.settingRest)

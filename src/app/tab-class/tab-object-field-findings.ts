@@ -10,6 +10,7 @@ import * as moment from 'moment';
 import { PreviewImageDialogComponent } from '../dialog/preview-image-dialog/preview-image-dialog.component';
 import { ImageService } from '../shared-comp/service/image.service';
 import { FilterFieldFindingsDialogComponent } from '../dialog/filter-field-findings-dialog/filter-field-findings-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 export class TabObjectFieldFindings extends TabObject {
   form: IFilterDTOForm = new IFilterDTOForm();
@@ -76,14 +77,22 @@ export class TabObjectFieldFindings extends TabObject {
   }
 
   detail(e: ClickModel) {
-    let url =
-      location.origin +
-      String(
-        this.router.createUrlTree(['/field-findings/detail'], {
-          queryParams: { id: e.data.id, type: 'field-findings' },
-        })
-      );
-    window.open(url, '_blank');
+    this.router.navigate(['/field-findings/detail'], {
+      relativeTo: AppModule.injector.get(ActivatedRoute),
+      queryParams: { 
+        id: e.data.id, 
+        type: 'field-findings' 
+      },
+      queryParamsHandling: 'merge'
+    })
+    // let url =
+    //   location.origin +
+    //   String(
+    //     this.router.createUrlTree(['/field-findings/detail'], {
+    //       queryParams: { id: e.data.id, type: 'field-findings' },
+    //     })
+    //   );
+    // window.open(url, '_blank');
   }
 
   download() {

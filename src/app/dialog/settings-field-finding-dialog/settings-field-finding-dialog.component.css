@@ -5,3 +5,12 @@
   .upload-profile{
     width: 100%;
   }
+
+  .button-add-new{
+    height: 40px;
+    width: 60px;
+    border:2px solid var(--color-accent);
+    border-radius:6px;
+    cursor: pointer;
+    margin-top: 18px;
+  }

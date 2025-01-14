@@ -75,7 +75,50 @@
             </ngx-dropzone-image-preview>
             </ngx-dropzone>
         </div>
-            <app-input [label]="'List of Signature'" class="td-input" [control]="form.signatureList"></app-input>
+        <div
+        fxLayout="column"
+        fxLayoutAlign="start stretch"
+        fxLayoutGap="10px">
+            <div
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="10px"
+            >
+                <div>Signature List:</div>
+            </div>
+            <div
+            fxLayout="row"
+            fxLayoutAlign="start center"
+            fxLayoutGap="10px"
+            fxFlex
+            *ngFor="let x of form.signatureList; let idx = index"
+            >
+                <app-input fxFlex="45%" [label]="'Name'" class="td-input" [control]="x.signature"></app-input>
+                <app-input fxFlex="45%" [label]="'Position'" class="td-input" [control]="x.position"></app-input>
+                <div
+                fxLayout="row"
+                fxLayoutAlign="center center"
+                fxLayoutGap="10px"
+                fxFlex="10%" 
+                class="button-add-new"
+                *ngIf="idx === 0"
+                (click)="addNewRowData()"
+                >
+                    <mat-icon svgIcon="add-icon"></mat-icon>
+                </div>
+                <div
+                fxLayout="row"
+                fxLayoutAlign="center center"
+                fxLayoutGap="10px"
+                fxFlex="10%" 
+                class="button-add-new"
+                *ngIf="idx > 0"
+                (click)="form.removeNewListCustom(idx)"
+                >
+                    <mat-icon svgIcon="delete"></mat-icon>
+                </div>
+            </div>
+        </div>
     </div>
     
     <app-button-plus-minus

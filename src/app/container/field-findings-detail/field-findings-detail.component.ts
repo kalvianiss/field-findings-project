@@ -148,8 +148,8 @@ export class FieldFindingsDetailComponent  extends BaseTab{
         }
         this.imagePrev = this.complaintList?.image;
         this.imageNext = this.complaintList?.afterImage;
-        console.log('complaintList', this.complaintList);
-        console.log('imagePrev', this.imagePrev);
+        // console.log('complaintList', this.complaintList);
+        // console.log('imagePrev', this.imagePrev);
         this.tableConfig = v.uiConfig;
       })
       .params(+idComplaint);
@@ -184,6 +184,10 @@ export class FieldFindingsDetailComponent  extends BaseTab{
           `print/print-field-findings?id=${this.complaintId}&type=${this.typeDetail}`,
           '_blank'
         );
+        // window.open(
+        //   `https://web.nimbus9.tech/ff/print/print-field-findings?id=${this.complaintId}&type=${this.typeDetail}`,
+        //   '_blank'
+        // );
       })
       .params(this.complaintId);
   }
