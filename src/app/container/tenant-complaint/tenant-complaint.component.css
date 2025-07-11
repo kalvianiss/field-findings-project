@@ -1,0 +1,9 @@
+.box-container-content{
+    position: relative;
+    width: 100%;
+  }
+  .box-content-main{
+    position:absolute;
+    width: 100%;
+  }
+  

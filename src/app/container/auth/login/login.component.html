@@ -24,7 +24,7 @@
                 class="txt-building t-white"
               >
                 <div>Nimbus9</div>
-                <div>Field Findings</div>
+                <div>Add On</div>
               </div>
             </div>
           </div>
@@ -52,7 +52,7 @@
               >
                 <div class="f-20">Sign in to</div>
                 <div class="f-28 fw-bold line-h30">
-                  Nimbus9 Field Findings
+                  Nimbus9 Add On
                 </div>
                 <div class="t-muted">
                   Use your registered information to sign in
@@ -107,6 +107,26 @@
                     [suffixIcon]="hide[1] ? 'eye-off' : 'eye-on'"
                     (visibleAction)="showPass(hide[1], 1)"
                   ></app-input>
+                  <!-- <div
+                  fxLayout="row"
+                  fxLayoutAlign="start stretch"
+                  fxLayoutGap="10px"
+                  >
+                    <div
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    fxLayoutGap="10px"
+                    >
+                      <ng-container *ngFor="let x of selectLogin; let i = index">
+                        <mat-checkbox
+                        value="{{x.id}}"
+                        [checked]="selected === i" 
+                        (change)="checkedValue(selected = i, x)"
+                        ></mat-checkbox>
+                        <div class="f-14">{{ x.name }}</div>
+                      </ng-container>
+                    </div>
+                  </div> -->
                   <div
                     fxLayout="row"
                     fxLayoutAlign="start stretch"

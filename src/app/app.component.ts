@@ -8,6 +8,9 @@ import { AuthService } from './shared-comp/service/auth.service';
 import { SnackbarService } from './shared-comp/service/snackbar.service';
 import { BaseRest } from './shared-comp/base-model/base-rest-class';
 import { MatDialog } from '@angular/material/dialog';
+import { FormControl } from '@angular/forms';
+import { RestAddOnService } from './shared-comp/service/rest-add-on.service';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -37,13 +40,19 @@ export class AppComponent implements OnInit, AfterViewInit {
   index = 0;
   showSidebar = false;
   showWidget: boolean = false;
+
+  titleLogin;
+  addOn:any=[];
+  selectedNameAddOn: string | null = null;
   constructor(
     private readonly matIconRegistry: MatIconRegistry,
     private readonly sanitizer: DomSanitizer,
     private router: Router,
     public authService: AuthService,
     private snacbarService: SnackbarService,
-    private matDialog :MatDialog
+    private matDialog :MatDialog, 
+    private raddOn:RestAddOnService,
+    private cookieService: CookieService,
   ) {
     this.iconRegistry.forEach((v) => {
       this.matIconRegistry.addSvgIcon(
@@ -69,8 +78,53 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.isLoading = false;
     let r = document.querySelector(':root');
     var rs = getComputedStyle(r);
+    if (this.authService.token){
+    setTimeout(() => {
+      this.titleLogin = localStorage.getItem('typeLogin');
+      this.loadAddOn();
+      this.addOn = JSON.parse(localStorage.getItem('addOn'));
+      if(this.addOn?.length > 0){
+        this.selectedNameAddOn = this.addOn?.[0]?.name;
+        if(this.selectedNameAddOn.toLowerCase() === 'field finding' || this.selectedNameAddOn.toLowerCase() === 'field findings'){
+          this.router.navigateByUrl('/field-findings');
+        }else if(this.selectedNameAddOn.toLowerCase() === 'tenant complaint'){
+          this.router.navigateByUrl('/tenant-complaint');
+        }else{
+          return;
+        }
+      }
+    }, 1000);
+   }
   }
 
+  changeAddOn(e){
+    this.selectedNameAddOn = e;
+    if(this.selectedNameAddOn.toLowerCase() === 'field finding' || this.selectedNameAddOn.toLowerCase() === 'field findings'){
+      this.router.navigateByUrl('/field-findings');
+    }else if(this.selectedNameAddOn.toLowerCase() === 'tenant complaint'){
+      this.router.navigateByUrl('/tenant-complaint');
+    }else{
+      return;
+    }
+  }
+
+  loadAddOn(){
+    BaseRest.build(this.raddOn)
+    .callRest('getAddOnList', (e) => {
+      localStorage.setItem('addOn', JSON.stringify(e.content));
+      this.addOn =JSON.parse(localStorage.getItem('addOn'));
+      this.selectedNameAddOn = this.addOn?.[0]?.name;
+      console.log('a', this.selectedNameAddOn)
+      if(this.selectedNameAddOn.toLowerCase() === 'field finding' || this.selectedNameAddOn.toLowerCase() === 'field findings'){
+        this.router.navigateByUrl('/field-findings');
+      }else if(this.selectedNameAddOn.toLowerCase() === 'tenant complaint'){
+        this.router.navigateByUrl('/tenant-complaint');
+      }else{
+        return;
+      }
+    })
+    .params();
+  }
   loadRefreshToken() {
     if (this.bypass) return;
     if (this.authService.token) {

@@ -32,7 +32,7 @@ export class RestSettingFieldFindingService extends CrudInterfaceService {
     let url = `${environment.api_image_upload}/api/inquiry-report/setting`;
     return this._http.post(url, dto, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('tokenCompaint')}`,
       },
     });
   }

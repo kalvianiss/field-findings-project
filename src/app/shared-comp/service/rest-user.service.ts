@@ -121,7 +121,7 @@ export class RestUserService extends CrudInterfaceService {
     // return this.request('GET', url);
     return this._http.get(url, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('tokenCompaint')}`,
       },
       responseType: 'blob',
     });
@@ -138,7 +138,7 @@ export class RestUserService extends CrudInterfaceService {
       dto,
       {
         headers: {
-          Authorization: `${localStorage.getItem('token')}`,
+          Authorization: `${localStorage.getItem('tokenCompaint')}`,
         },
       }
     );

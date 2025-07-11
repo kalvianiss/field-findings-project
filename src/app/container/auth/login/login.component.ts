@@ -5,6 +5,8 @@ import { AuthService } from 'src/app/shared-comp/service/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { ILoginToken, ILoginTokenForm } from 'src/app/model/login.model';
 import { SnackbarService } from 'src/app/shared-comp/service/snackbar.service';
+import { FormControl } from '@angular/forms';
+import { RestAddOnService } from 'src/app/shared-comp/service/rest-add-on.service';
 
 @Component({
   selector: 'app-login',
@@ -17,13 +19,27 @@ export class LoginComponent implements OnInit {
   form: ILoginTokenForm = new ILoginTokenForm();
   hide: boolean[] = [true, true, true];
   rememberMeActive: boolean;
+  selectLoginForm = new FormControl();
+
+  selectLogin: any = [
+    {
+      name: 'Field Findings',
+      id: 1,
+    },
+    {
+      name: 'Tenant Complaint',
+      id: 2,
+    },
+  ];
+  selected = -1;
   reload;
   constructor(
     private router: Router,
     private restAuth: AuthService,
     private cookieService: CookieService,
     private snacbarService: SnackbarService,
-    private renderer: Renderer2
+    private renderer: Renderer2, 
+    private addOn: RestAddOnService
   ) {}
 
   ngOnInit(): void {
@@ -36,22 +52,43 @@ export class LoginComponent implements OnInit {
   showPass(val, idx) {
     this.hide[idx] = !this.hide[idx];
   }
-
+  checkedValue(event, dt) {
+    this.selectLoginForm.setValue(dt.id);
+  }
   submit() {
+    // let err;
+    // if (!this.selectLoginForm.value) {
+    //   err = true;
+    //   this.snacbarService.createInfo('Please select Field Findings / Tenant Complaint');
+    // }
+    // if (err) return;
+    
+    // if (this.selectLoginForm.value === 1) {
+    //   localStorage.setItem('typeLogin', 'Field Findings');
+    // } else {
+    //   localStorage.setItem('typeLogin', 'Tenant Complaint');
+    // }
+    
+
     BaseRest.build(this.restAuth)
       .callRest('createAuthenticationToken', (v) => {
-        this.onSuccess(v);
         this.snacbarService.createSuccess(v.message);
+        this.onSuccess(v);
+        BaseRest.build(this.addOn)
+        .callRest('getAddOnList', (e) => {
+          localStorage.setItem('addOn', JSON.stringify(e.content));
+        })
+        .params();
+        window.location.reload()
       })
       .params(this.form.getRawValue());
   }
 
   onSuccess(v) {
     this.restAuth.token = v.content.token;
-    localStorage.setItem('codeClient', this.form.building.value);
+    localStorage.setItem('codeClientComplaint', this.form.building.value);
     localStorage.removeItem('nb');
     localStorage.removeItem('buildName');
-    this.router.navigateByUrl('/field-findings');
   }
 
   rememberMe(event) {

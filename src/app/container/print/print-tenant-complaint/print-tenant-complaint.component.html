@@ -58,7 +58,7 @@
   
       <!-- PRINT BODY-->
       <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="10px">
-        <div class="f-20 fw-bold my-top my-bottom t-center">FIELD FINDINGS REPORT</div>
+        <div class="f-20 fw-bold my-top my-bottom t-center">TENANT COMPLAINT REPORT</div>
         <div fxLayout="column" fxLayoutAlign="end end" fxLayoutGap="10px">
             <div>
                 Complaint Number : {{ dataDetail.complaintCode }}
@@ -182,7 +182,7 @@
             <div>
               {{ x.description }}
             </div>
-            <div class="f-10">
+            <div class="f-8">
               {{ x.dateCreated * 1000 | date : "dd/MM/yyyy H:mm:ss" }}
             </div>
           </div>

@@ -12,12 +12,12 @@ import { ImageService } from '../shared-comp/service/image.service';
 import { FilterFieldFindingsDialogComponent } from '../dialog/filter-field-findings-dialog/filter-field-findings-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 
-export class TabObjectFieldFindings extends TabObject {
+export class TabObjectTenantComplaint extends TabObject {
   form: IFilterDTOForm = new IFilterDTOForm();
   date = moment();
   constructor() {
     super('COMPLAINT');
-    this.name = 'Field Findings';
+    this.name = 'Tenant Complaint';
     this.tablePagingRest = AppModule.injector.get(RestComplaintService);
     if (localStorage.getItem('dt')) {
       localStorage.removeItem('dt');
@@ -48,7 +48,7 @@ export class TabObjectFieldFindings extends TabObject {
           month: this.form.monthStart,
           year: this.form.yearStart,
           item: this.form.getRawValue(),
-          type: 'Field Findings'
+          type: 'Tenant Complaint'
         },
       })
       .afterClosed()
@@ -60,8 +60,7 @@ export class TabObjectFieldFindings extends TabObject {
   }
   override refresh() {
     this.form.mine.setValue(false);
-    this.form.type.setValue('INTERNAL_COMPLAINT');
-    // this.form.type.setValue('COMPLAINT');
+    this.form.type.setValue('TENANT_COMPLAINT');
     this.form.orderedIdList.setValue([]);
 
     let restParam = RestParams.buildDef()
@@ -79,25 +78,18 @@ export class TabObjectFieldFindings extends TabObject {
   }
 
   detail(e: ClickModel) {
-    this.router.navigate(['/field-findings/detail'], {
+    this.router.navigate(['/tenant-complaint/detail'], {
       relativeTo: AppModule.injector.get(ActivatedRoute),
       queryParams: { 
         id: e.data.id, 
-        type: 'field-findings' 
+        type: 'tenant-complaint' 
       },
       queryParamsHandling: 'merge'
     })
-    // let url =
-    //   location.origin +
-    //   String(
-    //     this.router.createUrlTree(['/field-findings/detail'], {
-    //       queryParams: { id: e.data.id, type: 'field-findings' },
-    //     })
-    //   );
-    // window.open(url, '_blank');
   }
 
   download() {
+    this.form.type.setValue('TENANT_COMPLAINT');
     let restParam = RestParams.buildDef()
       .setPageNumber(this.pageNumber)
       .setPageSize(this.pageSize)
@@ -108,8 +100,7 @@ export class TabObjectFieldFindings extends TabObject {
         let fileType =
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
         const blob = new Blob([v], { type: fileType });
-        this.excelService.saveFile(blob, fileType, 'Data Field Findings');
-        // this.excelService.saveFile(blob, fileType)
+        this.excelService.saveFile(blob, fileType, 'Data Tenant Complaint');
       })
       .params(restParam, this.form.getRawValue());
   }

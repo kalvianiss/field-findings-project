@@ -54,7 +54,7 @@ export class AuthService extends CrudInterfaceService {
     this.http
       .get(url, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem('tokenCompaint')}`,
         },
         responseType: 'blob',
       })
@@ -69,7 +69,7 @@ export class AuthService extends CrudInterfaceService {
   refreshAndGetAuthenticationToken(): Observable<string> {
     return this.http.get<string>(`${environment.api_cloud}/api/refresh`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('tokenCompaint')}`,
       },
     });
   }
@@ -77,17 +77,17 @@ export class AuthService extends CrudInterfaceService {
   onlinecloud() {
     return this.http.get(`${this.env_cloud}/online?web=true`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('tokenCompaint')}`,
       },
     });
   }
 
   get token() {
-    let t = localStorage.getItem('token');
+    let t = localStorage.getItem('tokenCompaint');
     return t;
   }
   set token(val: string) {
-    val ? localStorage.setItem('token', val) : localStorage.clear();
+    val ? localStorage.setItem('tokenCompaint', val) : localStorage.clear();
   }
 
   get jwtDecode(): IToken {
@@ -97,9 +97,11 @@ export class AuthService extends CrudInterfaceService {
 
   removeAuthenticate(msg?: string) {
     this.token = null;
-    localStorage.removeItem('token');
+    localStorage.removeItem('tokenCompaint');
     localStorage.removeItem('time');
-    localStorage.removeItem('codeClient');
+    localStorage.removeItem('codeClientComplaint');
+    localStorage.removeItem('typeLogin');
+    localStorage.removeItem('addOn');
 
     this.router.navigate(['login']);
     this.dialog.closeAll();

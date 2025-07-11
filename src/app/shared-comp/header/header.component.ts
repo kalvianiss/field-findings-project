@@ -205,6 +205,11 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   goBack(){
-    this.router.navigateByUrl('/field-findings');
+    let type = localStorage.getItem('typeLogin');
+    if(type !== 'Tenant Complaint'){
+      this.router.navigateByUrl('/field-findings');
+    }else{
+      this.router.navigateByUrl('/tenant-complaint');
+    }
   }
 }

@@ -4,15 +4,15 @@
 
 export const environment = {
   // IP 2
-  // api_cloud: 'http://103.164.219.2:7801',
-  // api_image_upload: 'http://103.164.219.2:7878',
-  // api_image: 'http://103.164.219.2:7799',
-  // bmweb_ws: 'http://103.164.219.2:7803',
+  api_cloud: 'http://103.164.219.2:7801',
+  api_image_upload: 'http://103.164.219.2:7878',
+  api_image: 'http://103.164.219.2:7799',
+  bmweb_ws: 'http://103.164.219.2:7803',
   // AWS
-  api_cloud: 'https://cloud.nimbus9.tech/bm',
-  api_image: 'https://storage.googleapis.com/nimbus9-id',
-  api_image_upload: 'https://image2.nimbus9.tech/v1',
-  bmweb_ws: 'https://cloud.nimbus9.tech/ws',
+  // api_cloud: 'https://cloud.nimbus9.tech/bm',
+  // api_image: 'https://storage.googleapis.com/nimbus9-id',
+  // api_image_upload: 'https://image2.nimbus9.tech/v1',
+  // bmweb_ws: 'https://cloud.nimbus9.tech/ws',
   production: false,
 };
 

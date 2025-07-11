@@ -1,22 +1,22 @@
-import { AuthService } from 'src/app/shared-comp/service/auth.service';
-import { IRequestCreateUserDTO } from './../../../model/user.model';
 import { Component, OnInit } from '@angular/core';
-import { RestUserService } from 'src/app/shared-comp/service/rest-user.service';
-import { SnackbarService } from 'src/app/shared-comp/service/snackbar.service';
 import { Router } from '@angular/router';
+import { NgxImageCompressService } from 'ngx-image-compress';
+import { IRequestCreateUserDTO } from 'src/app/model/user.model';
+import { BaseRest } from 'src/app/shared-comp/base-model/base-rest-class';
+import { AuthService } from 'src/app/shared-comp/service/auth.service';
 import { ImageService } from 'src/app/shared-comp/service/image.service';
 import { RemoveSperatorService } from 'src/app/shared-comp/service/remove-sperator.service';
-import { NgxImageCompressService } from 'ngx-image-compress';
-import { RestSettingFieldFindingService } from 'src/app/shared-comp/service/rest-setting-field-findings.service';
-import { BaseRest } from 'src/app/shared-comp/base-model/base-rest-class';
 import { RestCompanyProfileService } from 'src/app/shared-comp/service/rest-company-profile.service';
+import { RestSettingFieldFindingService } from 'src/app/shared-comp/service/rest-setting-field-findings.service';
+import { RestUserService } from 'src/app/shared-comp/service/rest-user.service';
+import { SnackbarService } from 'src/app/shared-comp/service/snackbar.service';
 
 @Component({
-  selector: 'app-print-field-findings',
-  templateUrl: './print-field-findings.component.html',
-  styleUrls: ['./print-field-findings.component.css']
+  selector: 'app-print-tenant-complaint',
+  templateUrl: './print-tenant-complaint.component.html',
+  styleUrls: ['./print-tenant-complaint.component.css']
 })
-export class PrintFieldFindingsComponent implements OnInit {
+export class PrintTenantComplaintComponent implements OnInit {
   dataDetail;
   name;
   date;
@@ -37,13 +37,13 @@ export class PrintFieldFindingsComponent implements OnInit {
     private settingPrint : RestSettingFieldFindingService,
     private comproService: RestCompanyProfileService,
   ) {
-    this.name = 'print-field-findings';
+    this.name = 'print-tenant-complaint';
   }
 
   ngOnInit(): void {
     this.dataDetail = Object.assign(
       {},
-      ...JSON.parse(localStorage.getItem('print-field-findings-custom'))
+      ...JSON.parse(localStorage.getItem('print-tenant-complaint-custom'))
     );
     this.date = new Date().getTime() / 1000;
 
@@ -86,7 +86,6 @@ export class PrintFieldFindingsComponent implements OnInit {
       val === 'PENDING' ||
       val === 'SET DEPARTMENT' ||
       val === 'SET_EMPLOYEE' ||
-      val === 'SET EMPLOYEE' ||
       val === 'WAITING MATERIAL' ||
       val === 'WAITING TENANT' ||
       val === 'WAITING CHIEF' ||
@@ -113,7 +112,7 @@ export class PrintFieldFindingsComponent implements OnInit {
   }
 
   backPage() {
-    localStorage.removeItem('print-field-findings-custom');
+    localStorage.removeItem('print-tenant-complaint-custom');
     window.close();
   }
   readImage(val) {

@@ -16,7 +16,8 @@ export class RestComplaintService extends CrudInterfaceService {
     private removeString: RemoveSperatorService,
     private imageService: ImageService
   ) {
-    super(http, 'api/complaint', 'api/complaint/paging');
+    // super(http, 'api/complaint', 'api/complaint/paging');
+    super(http, 'api/inquiry-report', 'api/inquiry-report/paging');
   }
   convertSingle(b: any, methodName: string) {
     if (methodName === 'findAllPaging') {
@@ -159,7 +160,7 @@ export class RestComplaintService extends CrudInterfaceService {
     if (lang) url = url + `&lang=${lang}`;
     return this._http.post(url, dto, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('tokenCompaint')}`,
       },
       responseType: 'blob',
     });
@@ -169,44 +170,10 @@ export class RestComplaintService extends CrudInterfaceService {
     if (lang) url = url + `&lang=${lang}`;
     return this.request('GET', url);
   }
-
+ 
   printComplaintByid(id, lang?: string) {
     let url = `${environment.api_cloud}/api/complaint-print/${id}`;
     if (lang) url = url + `?lang=${lang}`;
     return this.request('GET', url);
-  }
-
-  setServiceLevelAgreement(id, dto, lang?: string) {
-    let url = `${environment.api_cloud}/api/complaint/${id}/set-sla`;
-    if (lang) url = url + `?lang=${lang}`;
-    return this.request('PUT', url, dto);
-  }
-
-  getItemDetail(inquiryId, dto, lang?: string) {
-    let url = `${environment.api_cloud}/api/complaint/${inquiryId}/set-item-detail`;
-    if (lang) url = url + `?lang=${lang}`;
-    return this.request('PUT', url, dto);
-  }
-
-  findDeptByComplaint(res: RestParams, dto, lang?: string) {
-    let url = `${environment.api_cloud}/api/complaint/${dto.idComplaint}/find_dept?page=${res.pageNumber}&size=${res.pageSize}`;
-    if (res.search) url = url + `&search=${res.search}`;
-    if (lang) url = url + `&lang=${lang}`;
-    return this.request('POST', url, dto);
-  }
-
-  removeDeptComplaint(id, dto, lang?: string) {
-    let url = `${environment.api_cloud}/api/complaint/${id}/remove_dept`;
-    if (lang) url = url + `?lang=${lang}`;
-    return this.request('DELETE', url, dto);
-  }
-
-  createComplaint(dto) {
-    let url = `${environment.api_image_upload}/api/complaint`;
-    return this._http.post(url, dto, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
   }
 }

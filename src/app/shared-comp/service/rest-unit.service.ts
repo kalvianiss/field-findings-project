@@ -35,7 +35,7 @@ export class RestUnitService extends CrudInterfaceService {
     if (lang) url = url + `?lang=${lang}`;
     return this._http.get(url, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('tokenCompaint')}`,
       },
       responseType: 'blob',
     });

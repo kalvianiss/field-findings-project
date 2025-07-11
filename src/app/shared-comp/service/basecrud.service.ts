@@ -41,7 +41,7 @@ export abstract class CrudInterfaceService {
     return this._http.request<any>(method, url, {
       body: body,
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('tokenCompaint')}`,
       },
       params: param,
     });
@@ -164,7 +164,7 @@ export abstract class CrudInterfaceService {
     if (lang) url = url + `&lang=${lang}`;
     return this._http.get(url, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('tokenCompaint')}`,
       },
       responseType: 'blob',
     });

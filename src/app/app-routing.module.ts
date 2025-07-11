@@ -4,6 +4,9 @@ import { LoginComponent } from './container/auth/login/login.component';
 import { FieldFindingsComponent } from './container/field-findings/field-findings/field-findings.component';
 import { FieldFindingsDetailComponent } from './container/field-findings-detail/field-findings-detail.component';
 import { PrintFieldFindingsComponent } from './container/print/print-field-findings/print-field-findings.component';
+import { TenantComplaintComponent } from './container/tenant-complaint/tenant-complaint.component';
+import { TenantComplaintDetailComponent } from './container/tenant-complaint-detail/tenant-complaint-detail.component';
+import { PrintTenantComplaintComponent } from './container/print/print-tenant-complaint/print-tenant-complaint.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -16,9 +19,18 @@ const routes: Routes = [
     component: FieldFindingsDetailComponent,
   },
   {
+    path: 'tenant-complaint',
+    component: TenantComplaintComponent,
+  },
+  {
+    path: 'tenant-complaint/detail',
+    component: TenantComplaintDetailComponent,
+  },
+  {
     path: 'print',
     children: [
       { path: 'print-field-findings', component: PrintFieldFindingsComponent },
+      { path: 'print-tenant-complaint', component: PrintTenantComplaintComponent },
     ]
   },
   {

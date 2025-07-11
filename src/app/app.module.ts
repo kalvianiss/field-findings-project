@@ -66,6 +66,9 @@ import { NoDataComponent } from './info/no-data/no-data.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { SettingsFieldFindingDialogComponent } from './dialog/settings-field-finding-dialog/settings-field-finding-dialog.component';
 import { PrintFieldFindingsComponent } from './container/print/print-field-findings/print-field-findings.component';
+import { TenantComplaintComponent } from './container/tenant-complaint/tenant-complaint.component';
+import { TenantComplaintDetailComponent } from './container/tenant-complaint-detail/tenant-complaint-detail.component';
+import { PrintTenantComplaintComponent } from './container/print/print-tenant-complaint/print-tenant-complaint.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +102,10 @@ import { PrintFieldFindingsComponent } from './container/print/print-field-findi
     LoadingDataPageComponent,
     NoDataComponent,
     SettingsFieldFindingDialogComponent,
-    PrintFieldFindingsComponent
+    PrintFieldFindingsComponent,
+    TenantComplaintComponent,
+    TenantComplaintDetailComponent,
+    PrintTenantComplaintComponent
   ],
   imports: [
     BrowserAnimationsModule,

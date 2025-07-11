@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { AppModule } from 'src/app/app.module';
 import { UIConfig } from 'src/app/model/table-model';
 import { BaseRest } from 'src/app/shared-comp/base-model/base-rest-class';
@@ -11,16 +10,15 @@ import { RemoveSperatorService } from 'src/app/shared-comp/service/remove-sperat
 import { RestComplaintService } from 'src/app/shared-comp/service/rest-complaint.service';
 import { RestTenantOfficeService } from 'src/app/shared-comp/service/rest-tenant-office.service';
 import { RestUnitService } from 'src/app/shared-comp/service/rest-unit.service';
-import { RestUserService } from 'src/app/shared-comp/service/rest-user.service';
 import { SnackbarService } from 'src/app/shared-comp/service/snackbar.service';
-import { TabObjectFieldFindings } from 'src/app/tab-class/tab-object-field-findings';
+import { TabObjectTenantComplaint } from 'src/app/tab-class/tab-object-tenant-complaint';
 
 @Component({
-  selector: 'app-field-findings-detail',
-  templateUrl: './field-findings-detail.component.html',
-  styleUrls: ['./field-findings-detail.component.css']
+  selector: 'app-tenant-complaint-detail',
+  templateUrl: './tenant-complaint-detail.component.html',
+  styleUrls: ['./tenant-complaint-detail.component.css']
 })
-export class FieldFindingsDetailComponent  extends BaseTab{
+export class TenantComplaintDetailComponent extends BaseTab {
   @Input() titleIndex: any = null;
   @Input() data: any;
   showNavigationArrows = true;
@@ -49,8 +47,8 @@ export class FieldFindingsDetailComponent  extends BaseTab{
   }
 
   buildTab(): void {
-    this.tabList = [new TabObjectFieldFindings()];
-    this.sidebarPath = 'field-findings';
+    this.tabList = [new TabObjectTenantComplaint()];
+    this.sidebarPath = 'tenant-complaint';
   }
 
   override ngOnInit(): void {
@@ -148,8 +146,6 @@ export class FieldFindingsDetailComponent  extends BaseTab{
         }
         this.imagePrev = this.complaintList?.image;
         this.imageNext = this.complaintList?.afterImage;
-        // console.log('complaintList', this.complaintList);
-        // console.log('imagePrev', this.imagePrev);
         this.tableConfig = v.uiConfig;
       })
       .params(+idComplaint);
@@ -174,14 +170,14 @@ export class FieldFindingsDetailComponent  extends BaseTab{
     return color;
   }
 
-  printFieldFindings() {
+  printTenantComplaint() {
     let arr = [];
     BaseRest.build(this.restComplaintService)
       .callRest('printComplaintByid', (v) => {
         arr.push(v.content);
-        localStorage.setItem('print-field-findings-custom', JSON.stringify(arr));
+        localStorage.setItem('print-tenant-complaint-custom', JSON.stringify(arr));
         window.open(
-          `print/print-field-findings?id=${this.complaintId}&type=${this.typeDetail}`,
+          `print/print-tenant-complaint?id=${this.complaintId}&type=${this.typeDetail}`,
           '_blank'
         );
         // window.open(
@@ -190,6 +186,5 @@ export class FieldFindingsDetailComponent  extends BaseTab{
         // );
       })
       .params(this.complaintId);
-  }
-
+    }
 }
