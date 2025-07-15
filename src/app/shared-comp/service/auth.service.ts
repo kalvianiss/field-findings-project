@@ -45,7 +45,7 @@ export class AuthService extends CrudInterfaceService {
 
   createAuthenticationToken(data: any): Observable<any> {
     return this.http.post<any>(
-      `${environment.api_cloud}/api/authenticate?web=true`,
+      `${environment.api_cloud}/api/add-on/authenticate?web=true`,
       data
     );
   }

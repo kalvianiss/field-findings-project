@@ -17,7 +17,7 @@ export class RestComplaintService extends CrudInterfaceService {
     private imageService: ImageService
   ) {
     // super(http, 'api/complaint', 'api/complaint/paging');
-    super(http, 'api/inquiry-report', 'api/inquiry-report/paging');
+    super(http, 'api/add-on/inquiry-report', 'api/add-on/inquiry-report/paging');
   }
   convertSingle(b: any, methodName: string) {
     if (methodName === 'findAllPaging') {

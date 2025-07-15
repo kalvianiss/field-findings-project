@@ -23,13 +23,13 @@ export class RestSettingFieldFindingService extends CrudInterfaceService {
   }
 
   getInquiryReportSetting() {
-    let url = `${environment.api_cloud}/api/inquiry-report/setting`;
+    let url = `${environment.api_cloud}/api/add-on/inquiry-report/setting`;
     return this.request('GET', url);
   }
 
   
   changeSetting(dto){
-    let url = `${environment.api_image_upload}/api/inquiry-report/setting`;
+    let url = `${environment.api_image_upload}/api/add-on/inquiry-report/setting`;
     return this._http.post(url, dto, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('tokenCompaint')}`,

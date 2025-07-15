@@ -17,7 +17,7 @@ export class RestAddOnService extends CrudInterfaceService {
   }
 
   getAddOnList(lang?: string) {
-    let url = `${environment.api_cloud}/api/get-add-on-list`;
+    let url = `${environment.api_cloud}/api/add-on/get-add-on-list`;
     if (lang) url = url + `&lang=${lang}`;
     return this.request('GET', url);
   }
