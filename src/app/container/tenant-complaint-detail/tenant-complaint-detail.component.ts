@@ -120,30 +120,45 @@ export class TenantComplaintDetailComponent extends BaseTab {
         });
         this.complaintList = v.content;
         if (this.complaintList.unitId) {
-          BaseRest.build(this.restUnit)
-            .callRest('printComplaintByid', (v) => {
-              this.complaintList = {
-                ...this.complaintList,
-                noUnit: v.content.noUnit,
-                unitName: v.content.typeUnit,
-                towerUnit: v.content.towerUnit,
-              };
-            })
-            .params(this.complaintList.unitId);
+          this.complaintList = {
+            ...this.complaintList,
+            noUnit: v.content.noUnit,
+            unitName: v.content.typeUnit,
+            towerUnit: v.content.towerUnit,
+          };
+        }else{
+          this.complaintList = {
+            ...this.complaintList,
+            noSiup: v.content.noSiup,
+            unitName: v.content.unitName,
+            namaPt: v.content.namaPt,
+          };
         }
+        // if (this.complaintList.unitId) {
+        //   BaseRest.build(this.restUnit)
+        //     .callRest('printComplaintByid', (v) => {
+        //       this.complaintList = {
+        //         ...this.complaintList,
+        //         noUnit: v.content.noUnit,
+        //         unitName: v.content.typeUnit,
+        //         towerUnit: v.content.towerUnit,
+        //       };
+        //     })
+        //     .params(this.complaintList?.unitId);
+        // }
 
-        if (this.complaintList.officeTenantId) {
-          BaseRest.build(this.restTenantOffice)
-            .callRest('printComplaintByid', (v) => {
-              this.complaintList = {
-                ...this.complaintList,
-                noSiup: v.content.noSiup,
-                unitName: v.content.unitName,
-                namaPt: v.content.namaPt,
-              };
-            })
-            .params(this.complaintList.officeTenantId);
-        }
+        // if (this.complaintList.officeTenantId) {
+        //   BaseRest.build(this.restTenantOffice)
+        //     .callRest('printComplaintByid', (v) => {
+        //       this.complaintList = {
+        //         ...this.complaintList,
+        //         noSiup: v.content.noSiup,
+        //         unitName: v.content.unitName,
+        //         namaPt: v.content.namaPt,
+        //       };
+        //     })
+        //     .params(this.complaintList.officeTenantId);
+        // }
         this.imagePrev = this.complaintList?.image;
         this.imageNext = this.complaintList?.afterImage;
         this.tableConfig = v.uiConfig;

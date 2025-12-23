@@ -32,7 +32,7 @@
       <div fxLayout="column" fxLayoutAlign="start stretch">
         <div class="body-content-container">
           <div *ngIf="!pagePrint" class="body-title">
-            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" *ngIf="!noShowAddOn">
               <mat-form-field appearance="fill" class="minimal-select">
                 <mat-select (selectionChange)="changeAddOn($event.value)" [(value)]="selectedNameAddOn">
                   <mat-option *ngFor="let x of addOn" [value]="x.name">{{

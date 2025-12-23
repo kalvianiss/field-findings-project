@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { iconRegistry } from './utils/icon-registry';
 import * as moment from 'moment';
 import { AuthService } from './shared-comp/service/auth.service';
@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { RestAddOnService } from './shared-comp/service/rest-add-on.service';
 import { CookieService } from 'ngx-cookie-service';
+import { filter } from 'rxjs';
 
 
 @Component({
@@ -44,6 +45,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   titleLogin;
   addOn:any=[];
   selectedNameAddOn: string | null = null;
+  noShowAddOn: boolean = false;
   constructor(
     private readonly matIconRegistry: MatIconRegistry,
     private readonly sanitizer: DomSanitizer,
@@ -81,18 +83,26 @@ export class AppComponent implements OnInit, AfterViewInit {
     if (this.authService.token){
     setTimeout(() => {
       this.titleLogin = localStorage.getItem('typeLogin');
-      this.loadAddOn();
       this.addOn = JSON.parse(localStorage.getItem('addOn'));
-      if(this.addOn?.length > 0){
-        this.selectedNameAddOn = this.addOn?.[0]?.name;
-        if(this.selectedNameAddOn.toLowerCase() === 'field finding' || this.selectedNameAddOn.toLowerCase() === 'field findings'){
-          this.router.navigateByUrl('/field-findings');
-        }else if(this.selectedNameAddOn.toLowerCase() === 'tenant complaint'){
-          this.router.navigateByUrl('/tenant-complaint');
-        }else{
-          return;
-        }
+      
+
+      this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe((e: NavigationEnd) => {
+      const urls = [
+        '/tenant-complaint/detail',       
+      ];
+
+      this.noShowAddOn = urls.some(u => e.url.includes(u));
+      });
+      if(!this.noShowAddOn){
+        this.loadAddOn();
       }
+      if(this.addOn?.length > 0 && !this.noShowAddOn){
+        this.selectedNameAddOn = this.addOn?.[0]?.name
+      }
+
+      console.log('noShowAddOn',this.noShowAddOn)
     }, 1000);
    }
   }
@@ -114,14 +124,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       localStorage.setItem('addOn', JSON.stringify(e.content));
       this.addOn =JSON.parse(localStorage.getItem('addOn'));
       this.selectedNameAddOn = this.addOn?.[0]?.name;
-      console.log('a', this.selectedNameAddOn)
-      if(this.selectedNameAddOn.toLowerCase() === 'field finding' || this.selectedNameAddOn.toLowerCase() === 'field findings'){
-        this.router.navigateByUrl('/field-findings');
-      }else if(this.selectedNameAddOn.toLowerCase() === 'tenant complaint'){
-        this.router.navigateByUrl('/tenant-complaint');
-      }else{
-        return;
-      }
     })
     .params();
   }
@@ -143,6 +145,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   onRouterOutletActivate(event: any) {
+    console.log('onRouterOutletActivate',event)
     if (!event.name) return;
     this.pagePrint = true;
   }

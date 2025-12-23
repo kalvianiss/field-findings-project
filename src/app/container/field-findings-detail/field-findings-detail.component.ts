@@ -131,7 +131,7 @@ export class FieldFindingsDetailComponent  extends BaseTab{
                 towerUnit: v.content.towerUnit,
               };
             })
-            .params(this.complaintList.unitId);
+            .params(idComplaint);
         }
 
         if (this.complaintList.officeTenantId) {
