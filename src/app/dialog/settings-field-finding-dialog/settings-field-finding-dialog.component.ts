@@ -120,6 +120,7 @@ addNewRowData() {
     BaseRest.build(this.settingRest)
     .callRest('changeSetting', (v) => {
       console.log('result',v)
+      console.log('changeSetting',this.settingRest.changeSetting)
       this.dialogRef.close(v)
     })
     .params(this.form.getRawValue());

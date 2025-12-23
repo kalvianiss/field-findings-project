@@ -29,6 +29,8 @@ export class RestSettingFieldFindingService extends CrudInterfaceService {
 
   
   changeSetting(dto){
+    // let url = `${environment.api_image}/api/add-on/inquiry-report/setting`;
+    // return this.request('POST', url, dto);
     let url = `${environment.api_image_upload}/api/add-on/inquiry-report/setting`;
     return this._http.post(url, dto, {
       headers: {

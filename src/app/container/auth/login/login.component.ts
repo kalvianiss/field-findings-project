@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
   ];
   selected = -1;
   reload;
+  arrAddOn: any = [];
   constructor(
     private router: Router,
     private restAuth: AuthService,
@@ -44,7 +45,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.restAuth.token) {
-      this.router.navigate(['field-findings']);
+      this.router.navigate(['/tenant-complaint']);
     }
     this.getCookies();
   }
@@ -77,6 +78,19 @@ export class LoginComponent implements OnInit {
         BaseRest.build(this.addOn)
         .callRest('getAddOnList', (e) => {
           localStorage.setItem('addOn', JSON.stringify(e.content));
+          this.arrAddOn = JSON.parse(localStorage.getItem('addOn'));
+          console.log('arr', this.arrAddOn)
+          if(this.arrAddOn?.[0]?.name === 'Tenant Complaint'){
+            this.router.navigate(['/tenant-complaint']);
+          }
+          else if (this.arrAddOn?.[0]?.name === 'Field Findings'){
+             this.router.navigate(['/field-findings']);
+          }else{
+            return
+            // this.restAuth.token = null;
+            // this.router.navigateByUrl('/');
+            // this.restAuth.removeAuthenticate();
+          }
         })
         .params();
         window.location.reload()

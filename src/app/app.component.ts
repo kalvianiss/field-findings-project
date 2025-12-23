@@ -91,9 +91,11 @@ export class AppComponent implements OnInit, AfterViewInit {
       .subscribe((e: NavigationEnd) => {
       const urls = [
         '/tenant-complaint/detail',       
+        '/field-findings/detail',       
       ];
 
       this.noShowAddOn = urls.some(u => e.url.includes(u));
+      console.log('noShowAddOn',this.noShowAddOn)
       });
       if(!this.noShowAddOn){
         this.loadAddOn();
@@ -102,7 +104,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.selectedNameAddOn = this.addOn?.[0]?.name
       }
 
-      console.log('noShowAddOn',this.noShowAddOn)
     }, 1000);
    }
   }
